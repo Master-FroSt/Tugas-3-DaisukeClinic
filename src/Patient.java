@@ -1,7 +1,31 @@
+class PatientData { // class data patient
+    private int ID;
+    private String name;
+    private String address;
+    private String phoneNum;
+    public PatientData(int ID, String Name, String Address, String phoneNum){
+        this.ID = ID;
+        this.name = Name;
+        this.address = Address;
+        this.phoneNum = phoneNum;
+    }
+
+    public int getId() {
+        return ID;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getAddress() {
+        return address;
+    }
+    public String getphoneNum() {
+        return phoneNum;
+    }
+}
+
 public class Patient {
-
-    // tambah properti ID (int), Name (String), Age (Int), Address(String), Phone Number(String misal 0812-345-6789)
-
+    BST patientBST = new BST();
 
     //Patient Record Management
 
@@ -15,10 +39,25 @@ public class Patient {
 
 
     //Patient Tree
+    public boolean insertPatient(PatientData p){
+        // Cek jika object berupa null
+        if(p == null){
+            System.err.println("Error: Patient ID must be provided.");
+            return false;
+        }
+        return patientBST.add(p.getId());
+    }
 
-    //insertPatient(Patient p)
+    public int searchPatient(PatientData p){
+        // Cek jika object berupa null
+        if(p == null){
+            System.err.println("Error: Patient ID must be provided.");
+            return -1;
+        }
+        return patientBST.search(p.getId());
+    }
 
-    //searchPatient(int id)
-
-    //inOrderDisplay()
+    public void inOrderDisplay(){
+        patientBST.inOrder();
+    }
 }

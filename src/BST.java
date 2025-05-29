@@ -67,7 +67,7 @@ public class BST {
     }
 
     // Method untuk memanggil pencetak terurut rekursi
-    public void InOrder() {
+    public void inOrder() {
         System.out.print("In-order traversal: ");
         inOrderRecursive(this.root);
         System.out.println();
