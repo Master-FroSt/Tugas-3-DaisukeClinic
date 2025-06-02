@@ -237,6 +237,10 @@ class PatientSearchTreeService {
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        PatientRecordService patientRecord = new PatientRecordService();
+        DoctorLoginService doctorList = new DoctorLoginService();
+        AppointmentQueueService appointmentQueue = new AppointmentQueueService();
+        PatientSearchTreeService patientTree = new PatientSearchTreeService();
 
         while (true){
             menuUtama();
@@ -246,29 +250,48 @@ public class Main {
             switch (pilihan) {
                 case 1:
                     // method untuk mendaftar pasien
-//                    daftarPatient(scanner, patientManager);
+                    System.out.println("Masukkan ID Pasien: ");
+                    int idPasien = scanner.nextInt();
+                    System.out.println("Masukkan Nama Pasien: ");
+                    String name = scanner.nextLine();
+                    System.out.println("Masukkan Umur Pasien: ");
+                    int age = scanner.nextInt();
+                    System.out.println("Masukkan Alamat Pasien: ");
+                    String address = scanner.nextLine();
+                    System.out.println("Masukkan Nomor Telepon Pasien: (Contoh 0812-3456-7890");
+                    String phoneNum = scanner.nextLine();
+                    Patient newPatient = new Patient(idPasien, name, age, address, phoneNum);
+                    patientRecord.addPatient(newPatient);
+                    patientTree.insertPatient(newPatient);
                     break;
                 case 2:
-                    // Logika untuk menghapus pasien
-                    System.out.println("Menghapus Pasien...");
-                    // Tambahkan kode untuk menghapus pasien
+                    System.out.println("Masukkan ID Patient: ");
+//                    Harusnya ada BST di method patientRecord (searchPatient)
+                    patientRecord.removePatientById(scanner.nextInt());
                     break;
                 case 3:
-                    // method mencari id pasien di patientBST
-
+                    System.out.println("Masukkan nama Patient: ");
+                    patientRecord.findPatientByName(scanner.nextLine());
                     break;
                 case 4:
-//                    patientManager.inOrderDisplay();
+//                    Harusnya ada BST di method patientRecord (inOrderDisplay)
+                    patientRecord.displayAllPatients();
                     break;
                 case 5:
-                    // Logika untuk login dokter
-                    System.out.println("Login Dokter...");
-                    // Tambahkan kode untuk login dokter
+                    System.out.println("Masukkan ID Dokter: ");
+                    int idDokter = scanner.nextInt();
+                    System.out.println("Masukkan nama Dokter: ");
+                    String namaDokter = scanner.nextLine();
+                    System.out.println("Masukkan Spesialisasi Dokter: ");
+                    String spesialisasi = scanner.nextLine();
+                    System.out.println("Masukkan loginTime Dokter: ");
+                    String loginTime = scanner.nextLine();
+                    Doctor newDoctor = new Doctor(idDokter, namaDokter, spesialisasi, loginTime);
+                    doctorList.loginDoctor(newDoctor);
                     break;
                 case 6:
-                    // Logika untuk logout dokter
-                    System.out.println("Logout Dokter...");
-                    // Tambahkan kode untuk logout dokter
+                    System.out.println("Masukkan ID dokter");
+                    doctorList.logoutDoctor(scanner.nextInt());
                     break;
                 case 7:
                     // Logika untuk daftar dokter
@@ -276,19 +299,22 @@ public class Main {
                     // Tambahkan kode untuk daftar dokter
                     break;
                 case 8:
-                    // Logika untuk jadwal reservasi
-                    System.out.println("Jadwal Reservasi...");
-                    // Tambahkan kode untuk jadwal reservasi
+                    appointmentQueue.viewUpcomingAppointments();
                     break;
                 case 9:
-                    // Logika untuk proses reservasi
-                    System.out.println("Proses Reservasi...");
-                    // Tambahkan kode untuk proses reservasi
+                    appointmentQueue.processNextAppointment();
                     break;
                 case 10:
-                    // Logika untuk daftar reservasi
-                    System.out.println("Daftar Reservasi...");
-                    // Tambahkan kode untuk daftar reservasi
+                    System.out.println("Masukkan ID Appointment: ");
+                    int idAppointment = scanner.nextInt();
+                    System.out.println("Masukkan ID Pasien: ");
+                    int idJadwalPatient = scanner.nextInt();
+                    System.out.println("Masukkan ID Dokter: ");
+                    int idJadwaldokter = scanner.nextInt();
+                    System.out.println("Masukkan time: ");
+                    String time = scanner.nextLine();
+                    Appointment newAppointment = new Appointment(idAppointment,  idJadwalPatient, idJadwaldokter, time);
+                    appointmentQueue.scheduleAppointment(newAppointment);
                     break;
                 case 11:
                     System.out.println("Keluar dari sistem.");
@@ -301,19 +327,6 @@ public class Main {
         }
     }
 
-//    private static void daftarPatient(Scanner scanner, Patient tree) {
-//        System.out.println("Mendaftar Pasien...");
-//
-//        // inisialisasi data Patient
-//        tree.addPatient();
-//
-//        // method memasukkan id pasien ke patientBST
-//        if(tree.insertPatient(newPatient)) {
-//            System.out.println("Pasien terdaftar");
-//        } else {
-//            System.err.println("Pasien gagal terdaftar");
-//        }
-//    }
 
     private static void menuUtama() {
         System.out.println("=== Sistem Rumah Sakit ===");

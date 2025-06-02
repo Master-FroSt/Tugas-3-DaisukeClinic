@@ -6,11 +6,11 @@ public class Doctor {
     private String specialty;
     private String loginTime; // Or String loginTime;
 
-    public Doctor(int ID, String name, String specialty) {
+    public Doctor(int ID, String name, String specialty, String loginTime) {
         this.ID = ID;
         this.name = name;
         this.specialty = specialty;
-        // loginTime can be set during login operation
+        this.loginTime = loginTime;
     }
 
     // Getter methods
