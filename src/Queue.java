@@ -47,5 +47,18 @@ public class Queue {
         return size;
     }
 
+    public int getDisplay(){
+        if (isEmpty()) {
+            System.out.println("Queue kosong");
+            return -1;
+        }
+        System.out.println("Isi Queue: )");
+        for (int i = 0; i < size; i++){
+            int index = (front + i) % capacity;
+            System.out.print(queue[index] + " ");
+        }
+        System.out.println();
+    }
+
     // tambah enqueue dengan addLast, dequeue dengan removeFirst, display/traversal, isEmpty, size, peek dengan get, traverse
 }
