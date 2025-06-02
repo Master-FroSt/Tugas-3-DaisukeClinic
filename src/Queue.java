@@ -1,16 +1,16 @@
-public class Queue {
+public class Queue<T> {
 
-    private int[] queue;
+    private T[] queue;
     private int front, rear, size, capacity;
 
     public Queue(int capacity) {
         this.capacity = capacity;
-        queue = new int[capacity];
+        this.queue = (T[]) new Object[capacity];
         front = size = 0;
         rear = -1;
     }
 
-    public void enqueue(int item) {
+    public void enqueue(T item) {
         if (size == capacity) {
             System.out.println("Queue penuh");
             return;
@@ -20,21 +20,21 @@ public class Queue {
         size++;
     }
 
-    public int dequeue() {
+    public T dequeue() {
         if (isEmpty()) {
             System.out.println("Queue kosong");
-            return -1;
+            return null;
         }
-        int item = queue[front];
+        T item = queue[front];
         front = (front + 1) % capacity;
         size--;
         return item;
     }
 
-    public int peek() {
+    public T peek() {
         if (isEmpty()) {
             System.out.println("Queue kosong");
-            return -1;
+            return null;
         }
         return queue[front];
     }
@@ -47,10 +47,10 @@ public class Queue {
         return size;
     }
 
-    public int getDisplay(){
+    public void getDisplay(){
         if (isEmpty()) {
             System.out.println("Queue kosong");
-            return -1;
+            return;
         }
         System.out.println("Isi Queue: )");
         for (int i = 0; i < size; i++){
@@ -59,6 +59,4 @@ public class Queue {
         }
         System.out.println();
     }
-
-    // tambah enqueue dengan addLast, dequeue dengan removeFirst, display/traversal, isEmpty, size, peek dengan get, traverse
 }

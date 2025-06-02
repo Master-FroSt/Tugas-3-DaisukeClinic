@@ -80,54 +80,48 @@ class PatientRecordService {
     }
 }
 
-// --- Node definition for Doctor Singly Linked List ---
-class DoctorNode {
-    Doctor data;
-    DoctorNode next;
-    // If doubly: DoctorNode prev;
-
-    public DoctorNode(Doctor data) {
-        this.data = data;
-        this.next = null;
-    }
-}
-
-// --- 2. Doctor Login List Service (using custom Singly Linked List) ---
 class DoctorLoginService {
-    private DoctorNode head; // Points to the most recently logged-in doctor
+    private LinkedList<Doctor> loggedInDoctors;
 
     public DoctorLoginService() {
-        this.head = null;
+        this.loggedInDoctors = new LinkedList<>();
     }
 
     // loginDoctor(Doctor doctor) → add to list (front)
     public void loginDoctor(Doctor doctor) {
-//        doctor.setLoginTime(); // Set login time (Belum ada)
-        DoctorNode newNode = new DoctorNode(doctor);
-        newNode.next = head;
-        head = newNode;
+        if (doctor == null) {
+            System.err.println("Cannot login null doctor.");
+            return;
+        }
+//        [BELOM KEPIKIRAN]doctor.setLoginTime(LocalTime.now());
+        loggedInDoctors.addFirst(doctor); // Assuming addFirst for LIFO behavior
         System.out.println("Dr. " + doctor.getName() + " logged in at " + doctor.getLoginTime());
     }
 
     // logoutDoctor(int doctorId) → remove by ID
     public boolean logoutDoctor(int doctorId) {
-        if (head == null) {
-            System.out.println("No doctors are logged in.");
+//        Cek jika ID valid
+        if (doctorId < 0) {
+            System.err.println("Invalid Doctor ID for logout.");
             return false;
         }
-        if (head.data.getID() == doctorId) {
-            System.out.println("Dr. " + head.data.getName() + " (ID: " + doctorId + ") logged out.");
-            head = head.next;
-            return true;
+//mencari object berdasarkan ID
+        Doctor doctorToLogout = null;
+        for (int i = 0; i < loggedInDoctors.size(); i++) {
+            if (loggedInDoctors.get(i).getID() == doctorId) {
+                doctorToLogout = loggedInDoctors.get(i);
+                break;
+            }
         }
-        DoctorNode current = head;
-        while (current.next != null && current.next.data.getID() != doctorId) {
-            current = current.next;
-        }
-        if (current.next != null) {
-            System.out.println("Dr. " + current.next.data.getName() + " (ID: " + doctorId + ") logged out.");
-            current.next = current.next.next;
-            return true;
+//        Cek jika penghapusan berhasil
+        if (doctorToLogout != null) {
+            if (loggedInDoctors.removeByValue(doctorToLogout)) {
+                System.out.println("Dr. " + doctorToLogout.getName() + " (ID: " + doctorId + ") logged out.");
+                return true;
+            } else {
+                System.out.println("Failed to logout Dr. with ID " + doctorId + " from list internals.");
+                return false;
+            }
         }
         System.out.println("Logged in doctor with ID " + doctorId + " not found for logout.");
         return false;
@@ -135,107 +129,70 @@ class DoctorLoginService {
 
     // getAllLoggedInDoctors() → traverse and display
     public void getAllLoggedInDoctors() {
-        if (head == null) {
+        if (loggedInDoctors.isEmpty()) {
             System.out.println("No doctors currently logged in.");
             return;
         }
+
         System.out.println("\n--- Currently Logged-In Doctors ---");
-        DoctorNode current = head;
-        while (current != null) {
-            System.out.println(current.data);
-            current = current.next;
-        }
+        loggedInDoctors.printForward();
         System.out.println("-----------------------------------");
     }
 }
 
-// --- Node definition for Appointment Queue (Linked List based) ---
-class AppointmentNode {
-    Appointment data;
-    AppointmentNode next;
-
-    public AppointmentNode(Appointment data) {
-        this.data = data;
-        this.next = null;
-    }
-}
-
-// --- 3. Appointment Queue Service (FIFO using custom Linked List) ---
 class AppointmentQueueService {
-    private AppointmentNode front;
-    private AppointmentNode rear;
+    private Queue<Appointment> appointmentQueue;
 
     public AppointmentQueueService() {
-        this.front = null;
-        this.rear = null;
+        this.appointmentQueue = new Queue<>(100);
     }
+
 
     // scheduleAppointment(Appointment a) → enqueue
     public void scheduleAppointment(Appointment appointment) {
-        AppointmentNode newNode = new AppointmentNode(appointment);
-        if (rear == null) { // Queue is empty
-            front = rear = newNode;
-        } else {
-            rear.next = newNode;
-            rear = newNode;
+        if (appointment == null) {
+            System.err.println("Cannot schedule null appointment.");
+            return;
         }
+        appointmentQueue.enqueue(appointment);
         System.out.println("Appointment ID " + appointment.getAppointmentId() + " scheduled.");
+
     }
 
     // processNextAppointment() → dequeue
     public Appointment processNextAppointment() {
-        if (front == null) {
+        if (appointmentQueue.isEmpty()) { // Delegate
             System.out.println("No appointments in queue to process.");
             return null;
         }
-        Appointment processedAppointment = front.data;
-        front = front.next;
-        if (front == null) { // If queue became empty
-            rear = null;
-        }
+        Appointment processedAppointment = appointmentQueue.dequeue();
         System.out.println("Processing appointment: " + processedAppointment);
         return processedAppointment;
+
     }
 
     // viewUpcomingAppointments() → display queue
     public void viewUpcomingAppointments() {
-        if (front == null) {
+        if (appointmentQueue.isEmpty()) { // Delegate
             System.out.println("No upcoming appointments in the queue.");
             return;
         }
         System.out.println("\n--- Upcoming Appointments (Queue) ---");
-        AppointmentNode current = front;
-        while (current != null) {
-            System.out.println(current.data);
-            current = current.next;
-        }
+        appointmentQueue.getDisplay();
         System.out.println("-------------------------------------");
     }
 
-    public boolean isEmpty() {
-        return front == null;
+    public boolean isQueueEmpty() { // Renamed for clarity
+        return appointmentQueue.isEmpty(); // Delegate
     }
 }
 
-// --- Node definition for Patient Binary Search Tree ---
-class PatientBSTNode {
-    Patient data; // Storing the full Patient object
-    PatientBSTNode left;
-    PatientBSTNode right;
-
-    public PatientBSTNode(Patient data) {
-        this.data = data;
-        this.left = null;
-        this.right = null;
-    }
-}
-
-// --- 4. Searchable Patient Tree Service (using custom BST) ---
 class PatientSearchTreeService {
-    private PatientBSTNode root;
+    private BST<Patient> patientTree;
 
     public PatientSearchTreeService() {
-        this.root = null;
+        this.patientTree = new BST();
+
     }
 
     // insertPatient(Patient p)
@@ -244,29 +201,12 @@ class PatientSearchTreeService {
             System.err.println("Cannot insert null patient into BST.");
             return;
         }
-        // Basic ID validation (can be more sophisticated)
         if (patient.getID() < 0) {
             System.err.println("Patient ID cannot be negative. Not inserting into BST.");
             return;
         }
-        root = insertRecursive(root, patient);
-    }
 
-    private PatientBSTNode insertRecursive(PatientBSTNode current, Patient patient) {
-        if (current == null) {
-            System.out.println("Inserting patient ID " + patient.getID() + " into BST.");
-            return new PatientBSTNode(patient);
-        }
-
-        if (patient.getID() < current.data.getID()) {
-            current.left = insertRecursive(current.left, patient);
-        } else if (patient.getID() > current.data.getID()) {
-            current.right = insertRecursive(current.right, patient);
-        } else {
-            // Duplicate ID: Policy could be to update or ignore. Here, we'll ignore.
-            System.out.println("Patient ID " + patient.getID() + " already exists in BST. Ignoring duplicate.");
-        }
-        return current;
+        patientTree.add(patient.getID());
     }
 
     // searchPatient(int id) -> returns Patient object
@@ -275,44 +215,22 @@ class PatientSearchTreeService {
             System.err.println("Cannot search for negative Patient ID in BST.");
             return null;
         }
-        PatientBSTNode resultNode = searchRecursive(root, id);
-        if (resultNode != null) {
-            System.out.println("Found patient ID " + id + " in BST: " + resultNode.data);
-            return resultNode.data;
+//(PERLU REVISI)
+        Patient foundPatient = patientTree.search(id);
+        if (foundPatient != null) {
+            System.out.println("Found patient ID " + id + " in BST: " + foundPatient);
         } else {
             System.out.println("Patient ID " + id + " not found in BST.");
-            return null;
         }
-    }
-
-    private PatientBSTNode searchRecursive(PatientBSTNode current, int id) {
-        if (current == null || current.data.getID() == id) {
-            return current;
-        }
-        if (id < current.data.getID()) {
-            return searchRecursive(current.left, id);
-        } else {
-            return searchRecursive(current.right, id);
-        }
+        return foundPatient;
     }
 
     // inOrderDisplay()
     public void inOrderDisplay() {
-        if (root == null) {
-            System.out.println("Patient BST is empty.");
-            return;
-        }
-        System.out.println("\n--- Patients In-Order (BST by ID) ---");
-        inOrderRecursive(root);
-        System.out.println("-------------------------------------");
-    }
+        System.out.println("\n--- Patients In-Order (CustomBST by ID) ---");
+        patientTree.inOrder();
+        System.out.println("-------------------------------------------");
 
-    private void inOrderRecursive(PatientBSTNode node) {
-        if (node != null) {
-            inOrderRecursive(node.left);
-            System.out.println(node.data); // Relies on Patient.toString()
-            inOrderRecursive(node.right);
-        }
     }
 }
 

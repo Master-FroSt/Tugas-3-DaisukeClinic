@@ -1,4 +1,4 @@
-public class BST {
+public class BST<T> {
     public static class Node {
         int data;
         Node left;

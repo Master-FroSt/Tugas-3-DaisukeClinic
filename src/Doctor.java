@@ -1,3 +1,5 @@
+
+
 public class Doctor {
     private int ID;
     private String name;
@@ -25,15 +27,4 @@ public class Doctor {
         return "Doctor[ID=" + ID + ", Name='" + name + "', Specialty='" + specialty +
                 (loginTime != null ? "', LoginTime=" + loginTime : "' Not Logged In") + "]";
     }
-
-    public Doctor(){ //constructor
-
-    }
-
-    //loginDoctor(Doctor doctor) → add to list
-
-    //logoutDoctor(int doctorId) → remove by ID
-
-    //getAllLoggedInDoctors() → traverse and display
-
 }

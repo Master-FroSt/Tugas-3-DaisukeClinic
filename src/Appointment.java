@@ -23,11 +23,4 @@ public class Appointment {
         return "Appointment[AppID=" + appointmentId + ", PatientID=" + patientId +
                 ", DoctorID=" + doctorId + ", Time=" + time + "]";
     }
-
-    //scheduleAppointment(Appointment a) → enqueue
-
-    //processNextAppointment() → dequeue
-
-    //viewUpcomingAppointments() → display queue
-
 }
