@@ -13,7 +13,7 @@ public class DoctorLoginService {
     }
 
     // loginDoctor(code.entity.Doctor doctor) → add to list (front)
-    public void loginDoctor(Doctor doctor) {
+    public static void loginDoctor(Doctor doctor) {
         if (doctor == null) {
             System.err.println("Cannot login null doctor.");
             return;
@@ -24,7 +24,7 @@ public class DoctorLoginService {
     }
 
     // logoutDoctor(int doctorId) → remove by ID
-    public boolean logoutDoctor(int doctorId) {
+    public static boolean logoutDoctor(int doctorId) {
 //        Cek jika ID valid
         if (doctorId < 0) {
             System.err.println("Invalid code.entity.Doctor ID for logout.");
@@ -53,7 +53,7 @@ public class DoctorLoginService {
     }
 
     // getAllLoggedInDoctors() → traverse and display
-    public void getAllLoggedInDoctors() {
+    public static void getAllLoggedInDoctors() {
         if (loggedInDoctors.isEmpty()) {
             System.out.println("No doctors currently logged in.");
             return;

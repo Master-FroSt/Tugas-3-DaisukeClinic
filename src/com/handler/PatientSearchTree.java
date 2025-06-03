@@ -25,7 +25,7 @@ public class PatientSearchTreeService {
     }
 
     // searchPatient(int id) -> returns code.entity.Patient object
-    public Patient searchPatient(int id) {
+    public static Patient searchPatient(int id) {
         if (id < 0) {
             System.err.println("Cannot search for negative code.entity.Patient ID in code.datastructure.BST.");
             return null;
@@ -41,7 +41,7 @@ public class PatientSearchTreeService {
     }
 
     // inOrderDisplay()
-    public void inOrderDisplay() {
+    public static void inOrderDisplay() {
         System.out.println("\n--- Patients In-Order (CustomBST by ID) ---");
         patientTree.inOrder();
         System.out.println("-------------------------------------------");

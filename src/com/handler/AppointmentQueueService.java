@@ -12,7 +12,7 @@ public class AppointmentQueueService {
 
 
     // scheduleAppointment(code.entity.Appointment a) → enqueue
-    public void scheduleAppointment(Appointment appointment) {
+    public static void scheduleAppointment(Appointment appointment) {
         if (appointment == null) {
             System.err.println("Cannot schedule null appointment.");
             return;
@@ -23,7 +23,7 @@ public class AppointmentQueueService {
     }
 
     // processNextAppointment() → dequeue
-    public Appointment processNextAppointment() {
+    public static Appointment processNextAppointment() {
         if (appointmentQueue.isEmpty()) { // Delegate
             System.out.println("No appointments in queue to process.");
             return null;
@@ -35,7 +35,7 @@ public class AppointmentQueueService {
     }
 
     // viewUpcomingAppointments() → display queue
-    public void viewUpcomingAppointments() {
+    public static void viewUpcomingAppointments() {
         if (appointmentQueue.isEmpty()) { // Delegate
             System.out.println("No upcoming appointments in the queue.");
             return;
