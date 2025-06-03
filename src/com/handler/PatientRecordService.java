@@ -1,7 +1,7 @@
-package code.system;
+package com.handler;
 
-import code.datastructure.LinkedList;
-import code.entity.Patient;
+import com.datastructure.LinkedList;
+import com.entity.Patient;
 
 //class patient record dengan fungsi tambah, hapus, cari, dan display
 public class PatientRecordService {

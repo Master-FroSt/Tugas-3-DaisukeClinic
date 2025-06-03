@@ -1,4 +1,4 @@
-package code.datastructure;
+package com.datastructure;
 
 public class Stack<T> {
     private LinkedList<T> stack = new LinkedList<>();

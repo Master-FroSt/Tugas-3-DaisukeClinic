@@ -1,4 +1,4 @@
-package code.entity;
+package com.entity;
 
 public class Patient {
     private int ID;
