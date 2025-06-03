@@ -1,3 +1,5 @@
+package code.datastructure;
+
 public class BST<T> {
     public static class Node {
         int data;

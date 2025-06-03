@@ -1,14 +1,14 @@
+package code.datastructure;
+
 class Node<T> {
     // Atribute
     T value;
     Node<T> nextNode;
-    Node<T> prevNode;
 
     // Construstor
     Node(T value) {
         this.value = value;
         this.nextNode = null;
-        this.prevNode = null;
     }
 }
 
@@ -35,7 +35,7 @@ public class LinkedList<T> {
         size = 0;
     }
 
-    //Method to print LinkedList from forward (head)
+    // Method to print LinkedList from forward (head)
     public void printForward() {
         if (isEmpty()) {
             System.out.println("LinkedList is Empty");
@@ -43,23 +43,9 @@ public class LinkedList<T> {
         else {
             Node<T> temp = head;
             while (temp != null) {
-                System.out.print(temp.value + " <-> ");
+                System.out.print(temp.value);
+                if (temp.nextNode != null) System.out.print(" -> ");
                 temp = temp.nextNode;
-            }
-            System.out.println("null");
-        }
-    }
-
-    // Method to print LinkedList from backward (tail)
-    public void printBackward() {
-        if (isEmpty()) {
-            System.out.println("LinkedList is Empty");
-        }
-        else {
-            Node<T> temp = tail;
-            while (temp != null) {
-                System.out.print(temp.value + " <-> ");
-                temp = temp.prevNode;
             }
             System.out.println("null");
         }
@@ -73,7 +59,6 @@ public class LinkedList<T> {
             tail = newNode;
         }
         else {
-            head.prevNode = newNode;
             newNode.nextNode = head;
             head = newNode;
         }
@@ -85,48 +70,11 @@ public class LinkedList<T> {
         Node<T> newNode = new Node<>(value);
         if (isEmpty()) {
             head = newNode;
+            tail = newNode;
         }
         else {
             tail.nextNode = newNode;
-            newNode.prevNode = tail;
-        }
-        tail = newNode;
-        size++;
-    }
-
-    // Method to add node at spesific index
-    public void addAt(int index, T value) {
-        if (index <= 0) {
-            addFirst(value);
-            return;
-        }
-        else if (index >= size) {
-            addLast(value);
-            return;
-        }
-
-        Node<T> newNode = new Node<>(value);
-        if (index <= size / 2) {
-            Node<T> temp = head;
-            for (int i = 0; i < index; i++) {
-                temp = temp.nextNode;
-            }
-            newNode.nextNode = temp;
-            newNode.prevNode = temp.prevNode;
-            temp.prevNode = newNode;
-            newNode.prevNode.nextNode = newNode;
-        }
-        else {
-            Node<T> temp = tail;
-            for (int i = size - 1; i > index; i--) {
-                temp = temp.prevNode;
-            }
-            newNode.nextNode = temp;
-            newNode.prevNode = temp.prevNode;
-            temp.prevNode = newNode;
-            if (newNode.prevNode != null) {
-                newNode.prevNode.nextNode = newNode;
-            }
+            tail = newNode;
         }
         size++;
     }
@@ -138,17 +86,9 @@ public class LinkedList<T> {
             return;
         }
 
-        Node<T> temp;
-        if (index < size / 2) {
-            temp = head;
-            for (int i = 0; i < index; i++) {
-                temp = temp.nextNode;
-            }
-        } else {
-            temp = tail;
-            for (int i = size - 1; i > index; i--) {
-                temp = temp.prevNode;
-            }
+        Node<T> temp = head;
+        for (int i = 0; i < index; i++) {
+            temp = temp.nextNode;
         }
 
         temp.value = newValue;
@@ -166,7 +106,6 @@ public class LinkedList<T> {
         }
         else {
             head = head.nextNode;
-            head.prevNode = null;
         }
         size--;
     }
@@ -182,42 +121,13 @@ public class LinkedList<T> {
             tail = null;
         }
         else {
-            tail = tail.prevNode;
-            tail.nextNode = null;
-        }
-        size--;
-    }
-
-    // Method to remove node at spesific index
-    public void removeAt(int index) {
-        if (index < 0 || index >= size) {
-            System.out.println("Index not found");
-            return;
-        }
-        if (index == 0) {
-            removeFirst();
-            return;
-        }
-        if (index == size - 1) {
-            removeLast();
-            return;
-        }
-
-        Node<T> temp;
-        if (index <= size / 2) {
-            temp = head;
-            for (int i = 0; i < index; i++) {
+            Node<T> temp = head;
+            while(temp.nextNode != tail) {
                 temp = temp.nextNode;
             }
+            tail = temp;
+            tail.nextNode = null;
         }
-        else {
-            temp = tail;
-            for (int i = size - 1; i > index; i--) {
-                temp = temp.prevNode;
-            }
-        }
-        temp.prevNode.nextNode = temp.nextNode;
-        temp.nextNode.prevNode = temp.prevNode;
         size--;
     }
 
@@ -238,20 +148,16 @@ public class LinkedList<T> {
             System.out.println("Index not found");
             return null;
         }
-        Node<T> temp;
-        if (index < size / 2) {
-            temp = head;
-            for (int i = 0; i < index; i++) {
-                temp = temp.nextNode;
-            }
-        }
-        else {
-            temp = tail;
-            for (int i = size - 1; i > index; i--) {
-                temp = temp.prevNode;
-            }
+        Node<T> temp = head;
+        for (int i = 0; i < index; i++) {
+            temp = temp.nextNode;
         }
         return temp.value;
+    }
+
+    // Method to check if value exists in LinkedList
+    public boolean contains(T value) {
+        return indexOf(value) != -1;
     }
 
     // Method to get the index of a spesific given value
@@ -265,13 +171,30 @@ public class LinkedList<T> {
             temp = temp.nextNode;
             index++;
         }
-        return -1; // Not found
+        return -1;
     }
 
-    // Method to check if value exists in LinkedList
-    public boolean contains(T value) {
-        return indexOf(value) != -1;
+    // Method to remove node at spesific index
+    public void removeAt(int index) {
+        if (index < 0 || index >= size) {
+            System.out.println("Index out of bounds");
+            return;
+        }
+        if (index == 0) {
+            removeFirst();
+            return;
+        }
+        Node<T> prev = head;
+        for (int i = 0; i < index - 1; i++) {
+            prev = prev.nextNode;
+        }
+        prev.nextNode = prev.nextNode.nextNode;
+        if (index == size - 1) {
+            tail = prev;
+        }
+        size--;
     }
+
 
     // Method to get the value of the first Node
     public T getFirst() {

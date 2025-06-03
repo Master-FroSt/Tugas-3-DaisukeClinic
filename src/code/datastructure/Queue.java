@@ -1,3 +1,5 @@
+package code.datastructure;
+
 public class Queue<T> {
 
     private T[] queue;
@@ -12,7 +14,7 @@ public class Queue<T> {
 
     public void enqueue(T item) {
         if (size == capacity) {
-            System.out.println("Queue penuh");
+            System.out.println("code.datastructure.Queue penuh");
             return;
         }
         rear = (rear + 1) % capacity;
@@ -22,7 +24,7 @@ public class Queue<T> {
 
     public T dequeue() {
         if (isEmpty()) {
-            System.out.println("Queue kosong");
+            System.out.println("code.datastructure.Queue kosong");
             return null;
         }
         T item = queue[front];
@@ -33,7 +35,7 @@ public class Queue<T> {
 
     public T peek() {
         if (isEmpty()) {
-            System.out.println("Queue kosong");
+            System.out.println("code.datastructure.Queue kosong");
             return null;
         }
         return queue[front];
@@ -49,10 +51,10 @@ public class Queue<T> {
 
     public void getDisplay(){
         if (isEmpty()) {
-            System.out.println("Queue kosong");
+            System.out.println("code.datastructure.Queue kosong");
             return;
         }
-        System.out.println("Isi Queue: )");
+        System.out.println("Isi code.datastructure.Queue: )");
         for (int i = 0; i < size; i++){
             int index = (front + i) % capacity;
             System.out.print(queue[index] + " ");
