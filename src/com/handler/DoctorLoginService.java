@@ -3,6 +3,8 @@ package com.handler;
 import com.datastructure.LinkedList;
 import com.entity.Doctor;
 
+import java.time.LocalTime;
+
 public class DoctorLoginService {
     private LinkedList<Doctor> loggedInDoctors;
 
@@ -16,7 +18,7 @@ public class DoctorLoginService {
             System.err.println("Cannot login null doctor.");
             return;
         }
-//        [BELOM KEPIKIRAN]doctor.setLoginTime(LocalTime.now());
+       doctor.setLoginTime(LocalTime.now());
         loggedInDoctors.addFirst(doctor); // Assuming addFirst for LIFO behavior
         System.out.println("Dr. " + doctor.getName() + " logged in at " + doctor.getLoginTime());
     }
