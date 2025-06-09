@@ -5,11 +5,9 @@ import java.util.Scanner;
 public class Helper {
     public static int integerInput(Scanner scanner, String prompt) {
         int number;
-
         while (true) {
             System.out.print(prompt);
             String input = scanner.nextLine();
-
             try {
                 number = Integer.parseInt(input);
                 return number; // keluar kalau input valid
@@ -22,10 +20,8 @@ public class Helper {
     public static void pressEnter() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("\n\nPress Enter to Continue....");
-
         scanner.nextLine(); // Wait for Enter key
-
         System.out.println("\n\n\n"); // aslinya nggak ini
-        // clearScreen();
+//         clearScreen();
     }
 }

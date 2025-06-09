@@ -3,53 +3,66 @@ package com.handler;
 import com.datastructure.LinkedList;
 import com.entity.Doctor;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DoctorLoginService {
-    private static LinkedList<Doctor> loggedInDoctors;
+    private static final LinkedList<Doctor> loggedInDoctors = new LinkedList<>();
 
-    public DoctorLoginService() {
-        this.loggedInDoctors = new LinkedList<>();
-    }
+    private DoctorLoginService() {}
 
-    // loginDoctor(code.entity.Doctor doctor) → add to list (front)
     public static void loginDoctor(Doctor doctor) {
         if (doctor == null) {
             System.err.println("Cannot login null doctor.");
             return;
         }
-       doctor.setLoginTime(LocalTime.now());
-        loggedInDoctors.addFirst(doctor); // Assuming addFirst for LIFO behavior
-        System.out.println("Dr. " + doctor.getName() + " logged in at " + doctor.getLoginTime());
+
+        // Check if the doctor is already logged in.
+        if (loggedInDoctors.contains(doctor)) {
+            System.err.println("Dr. " + doctor.getName() + " is already logged in.");
+            return;
+        }
+
+        // Set login time and status
+        doctor.setLoginTime(LocalDateTime.now());
+        doctor.setIsLogin(true);
+        doctor.setLogoutTime(null); // Clear any previous logout time.
+
+        loggedInDoctors.addFirst(doctor); // Add to the front of the queue
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        System.out.println("Dr. " + doctor.getName() + " logged in successfully at " + doctor.getLoginTime().format(formatter));
     }
 
     // logoutDoctor(int doctorId) → remove by ID
-    public static boolean logoutDoctor(int doctorId) {
+    public static void logoutDoctor(int doctorId) {
 //        Cek jika ID valid
         if (doctorId < 0) {
             System.err.println("Invalid code.entity.Doctor ID for logout.");
-            return false;
+            return;
         }
 //mencari object berdasarkan ID
+        int indexToRemove = -1;
         Doctor doctorToLogout = null;
+
         for (int i = 0; i < loggedInDoctors.size(); i++) {
             if (loggedInDoctors.get(i).getId() == doctorId) {
                 doctorToLogout = loggedInDoctors.get(i);
-                break;
+                indexToRemove = i;
+                break; // Exit the loop once found
             }
         }
 //        Cek jika penghapusan berhasil
-        if (doctorToLogout != null) {
-            if (loggedInDoctors.removeByValue(doctorToLogout)) {
-                System.out.println("Dr. " + doctorToLogout.getName() + " (ID: " + doctorId + ") logged out.");
-                return true;
-            } else {
-                System.out.println("Failed to logout Dr. with ID " + doctorId + " from list internals.");
-                return false;
-            }
+        if (indexToRemove != -1) {
+//            Set logout time
+            doctorToLogout.setLogoutTime(LocalDateTime.now());
+            doctorToLogout.setIsLogin(false);
+
+            loggedInDoctors.removeAt(indexToRemove); // Use removeAt(index)
+            System.out.println("Dr. " + doctorToLogout.getName() + " (ID: " + doctorId + ") logged out successfully.");
+        } else {
+            System.out.println("Logged in doctor with ID " + doctorId + " not found.");
         }
-        System.out.println("Logged in doctor with ID " + doctorId + " not found for logout.");
-        return false;
     }
 
     // getAllLoggedInDoctors() → traverse and display

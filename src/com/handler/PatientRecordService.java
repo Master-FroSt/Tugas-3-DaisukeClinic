@@ -37,11 +37,11 @@ public class PatientRecordService {
     }
 
     // menghapus patient dengan id
-    public static boolean removePatientById(int id) {
+    public static void removePatientById(int id) {
         // Cek jika ID valid
         if (id < 0) {
             System.out.println("Records are empty. Cannot remove.");
-            return false;
+            return;
         }
         // mencari object berdasarkan id
         Patient patientToRemove = null;
@@ -56,16 +56,19 @@ public class PatientRecordService {
             if (patientList.removeByValue(patientToRemove)) {
                 PatientSearchTreeService.removePatient(patientToRemove);
                 System.out.println("Patient '" + patientToRemove.getName() + "' (ID: " + id + ") removed.");
-                return true;
+                return;
             } else {
                 System.out.println("Failed to remove patient with ID " + id + " from list internals.");
-                return false;
+                return;
             }
         }
         System.out.println("Patient with ID " + id + " not found for removal.");
-        return false;
     }
-
+//memanggil method search dari patient tree
+    public static Patient findPatientById(int id) {
+        PatientSearchTreeService.searchPatient(id, patientList);
+        return null;
+    }
     // findPatientByName(String name)
     public static void findPatientByName(String name) {
         // Cek jika nama tertulis
@@ -86,13 +89,14 @@ public class PatientRecordService {
             System.out.println("Patients found:");
             for (int n = 0; n < foundPatient.size(); n++) {
                 foundPatient.get(n).displayPatientInfo();
-                System.out.println("");
+                System.out.println();
             }
         }
         else {
             System.out.println("Patient with name '" + name + "' not found.");
         }
     }
+
 
     // displayAllPatients()
     public static void displayAllPatients() {
@@ -144,7 +148,6 @@ public class PatientRecordService {
 
                 Patient newPatient = new Patient(ID, Name, age, address, number);
                 addPatient(newPatient);
-                PatientSearchTreeService.insertPatient(newPatient);
 
                 String[] tempIllness = parts[5].trim().split("\\,");
                 if (tempIllness.length < 1) continue;
