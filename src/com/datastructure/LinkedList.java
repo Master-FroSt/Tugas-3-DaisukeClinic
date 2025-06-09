@@ -5,7 +5,7 @@ class Node<T> {
     T value;
     Node<T> nextNode;
 
-    // Construstor
+    // Constructor
     Node(T value) {
         this.value = value;
         this.nextNode = null;
@@ -13,7 +13,7 @@ class Node<T> {
 }
 
 public class LinkedList<T> {
-    // Atribute
+    // Attribute
     private Node<T> head = null;
     private Node<T> tail = null;
     private int size = 0;
@@ -157,6 +157,9 @@ public class LinkedList<T> {
 
     // Method to check if value exists in LinkedList
     public boolean contains(T value) {
+        if (isEmpty()) {
+            return false;
+        }
         return indexOf(value) != -1;
     }
 
@@ -212,5 +215,22 @@ public class LinkedList<T> {
             return null;
         }
         return tail.value;
+    }
+
+    @Override
+    public String toString() {
+        if (!isEmpty()) {
+            StringBuilder output = new StringBuilder();
+            Node<T> temp = head;
+            while (temp != null) {
+                output.append(temp.value);
+                if (temp.nextNode != null) {
+                    output.append(", ");
+                }
+                temp = temp.nextNode;
+            }
+            return output.toString();
+        }
+        return "LinkedList is empty";
     }
 }

@@ -4,7 +4,7 @@ import com.datastructure.Queue;
 import com.entity.Appointment;
 
 public class AppointmentQueueService {
-    private Queue<Appointment> appointmentQueue;
+    private static Queue<Appointment> appointmentQueue;
 
     public AppointmentQueueService() {
         this.appointmentQueue = new Queue<>(100);

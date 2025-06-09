@@ -6,7 +6,7 @@ import com.entity.Doctor;
 import java.time.LocalTime;
 
 public class DoctorLoginService {
-    private LinkedList<Doctor> loggedInDoctors;
+    private static LinkedList<Doctor> loggedInDoctors;
 
     public DoctorLoginService() {
         this.loggedInDoctors = new LinkedList<>();

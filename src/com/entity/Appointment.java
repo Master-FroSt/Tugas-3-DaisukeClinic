@@ -17,21 +17,10 @@ public class Appointment {
     }
 
     // ==================================== Getter ====================================
-    public int getAppointmentId() {
-        return appointmentId;
-    }
-
-    public int getPatientId() {
-        return patientId;
-    }
-
-    public int getDoctorId() {
-        return doctorId;
-    }
-
-    public LocalDateTime getTime() {
-        return time;
-    }
+    public int getAppointmentId() { return appointmentId; }
+    public int getPatientId() { return patientId; }
+    public int getDoctorId() { return doctorId; }
+    public LocalDateTime getTime() { return time; }
 
     // ==================================== Setter ====================================
     public void setTime(LocalDateTime time) {

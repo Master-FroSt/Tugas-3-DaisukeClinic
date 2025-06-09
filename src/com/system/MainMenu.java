@@ -42,18 +42,24 @@ public class MainMenu {
             switch (choice) {
                 case "1" -> {
                     addNewPatient();
+                    PatientRecordService.updatePatientTXT();
+                    Helper.pressEnter();
                     break;
                 }
                 case "2" -> {
                     removePatientId();
+                    PatientRecordService.updatePatientTXT();
+                    Helper.pressEnter();
                     break;
                 }
                 case "3" -> {
                     searchPatientName();
+                    Helper.pressEnter();
                     break;
                 }
                 case "4" -> {
-                    displayPatientList();;
+                    displayPatientList();
+                    Helper.pressEnter();
                     break;
                 }
                 case "5" -> {
@@ -111,7 +117,7 @@ public class MainMenu {
                     break;
                 }
                 case "0" -> {
-                    System.out.println("Thanks for using Daisuke CLinic!");
+                    System.out.println("Thanks for using Daisuke Clinic!");
                     System.out.println("Exiting.....");
                     break;
                 }

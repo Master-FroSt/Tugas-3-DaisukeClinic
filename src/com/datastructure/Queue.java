@@ -1,64 +1,32 @@
 package com.datastructure;
 
 public class Queue<T> {
+    private LinkedList<T> queue = new LinkedList<>();
 
-    private T[] queue;
-    private int front, rear, size, capacity;
-
-    public Queue(int capacity) {
-        this.capacity = capacity;
-        this.queue = (T[]) new Object[capacity];
-        front = size = 0;
-        rear = -1;
+    // Method to add new data at the rear
+    public void enqueue(T value) {
+        queue.addLast(value);
     }
 
-    public void enqueue(T item) {
-        if (size == capacity) {
-            System.out.println("code.datastructure.Queue penuh");
-            return;
-        }
-        rear = (rear + 1) % capacity;
-        queue[rear] = item;
-        size++;
-    }
-
+    // Method to delete the data at the front
     public T dequeue() {
-        if (isEmpty()) {
-            System.out.println("code.datastructure.Queue kosong");
-            return null;
-        }
-        T item = queue[front];
-        front = (front + 1) % capacity;
-        size--;
-        return item;
+        T value = queue.getFirst();
+        queue.removeFirst();
+        return value;
     }
 
+    // Method to return the data at the front
     public T peek() {
-        if (isEmpty()) {
-            System.out.println("code.datastructure.Queue kosong");
-            return null;
-        }
-        return queue[front];
+        return queue.getFirst();
     }
 
+    // Method to check if the stack isEmpty
     public boolean isEmpty() {
-        return size == 0;
+        return queue.isEmpty();
     }
 
-    public int getSize() {
-        return size;
-    }
-
-    public void getDisplay(){
-        if (isEmpty()) {
-            System.out.println("code.datastructure.Queue kosong");
-            return;
-        }
-        System.out.println("Isi code.datastructure.Queue: )");
-        for (int i = 0; i < size; i++){
-            int index = (front + i) % capacity;
-            System.out.print(queue[index] + " ");
-        }
-        System.out.println();
+    // Method to get the current number of items
+    public int size() {
+        return queue.size();
     }
 }
