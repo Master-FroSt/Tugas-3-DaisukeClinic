@@ -15,6 +15,10 @@ public class PatientRecordService {
         patientList = new LinkedList<>();
     }
 
+    public static LinkedList<Patient> getPatientList() {
+        return patientList;
+    }
+
     // menambah patient ke list
     public static void addPatient(Patient patient) {
         // cek jika object berisi data
@@ -37,11 +41,11 @@ public class PatientRecordService {
     }
 
     // menghapus patient dengan id
-    public static void removePatientById(int id) {
+    public static boolean removePatientById(int id) {
         // Cek jika ID valid
         if (id < 0) {
             System.out.println("Records are empty. Cannot remove.");
-            return;
+            return false;
         }
         // mencari object berdasarkan id
         Patient patientToRemove = null;
@@ -55,19 +59,15 @@ public class PatientRecordService {
         if (patientToRemove != null) {
             if (patientList.removeByValue(patientToRemove)) {
                 PatientSearchTreeService.removePatient(patientToRemove);
-                System.out.println("Patient '" + patientToRemove.getName() + "' (ID: " + id + ") removed.");
-                return;
+                System.out.printf("Patient '%s' (ID: %04d) removed.\n", patientToRemove.getName(), id);
+                return true;
             } else {
                 System.out.println("Failed to remove patient with ID " + id + " from list internals.");
-                return;
+                return false;
             }
         }
         System.out.println("Patient with ID " + id + " not found for removal.");
-    }
-//memanggil method search dari patient tree
-    public static Patient findPatientById(int id) {
-        PatientSearchTreeService.searchPatient(id, patientList);
-        return null;
+        return false;
     }
     // findPatientByName(String name)
     public static void findPatientByName(String name) {
@@ -165,7 +165,7 @@ public class PatientRecordService {
 
     public static void updatePatientTXT() {
         try {
-            FileWriter myWriter = new FileWriter("./data/patient.txt");
+            FileWriter myWriter = new FileWriter("src/data/patient.txt");
             myWriter.write("Patient ID | Name | Age | Address | Phone Number | Illness History\n");
             for (int i = 0; i < patientList.size(); i++) {
                 Patient localPatient = patientList.get(i);

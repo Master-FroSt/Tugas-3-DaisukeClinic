@@ -2,7 +2,6 @@ package handler;
 
 import datastructure.LinkedList;
 import entity.Doctor;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -78,14 +77,14 @@ public class DoctorLoginService {
 
         System.out.println("\n--- Currently Logged-In Doctors ---");
         System.out.println("-----------------------------------");
-        System.out.printf("%-8s %-25s %-20s %-15s\n", "ID", "Name" , "Login Time", "Specialist");
+        System.out.printf("%-8s %-25s %-18s %-15s\n", "ID", "Name" , "Login Time", "Specialist");
         for (int i = 0; i < loggedInDoctors.size(); i++) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
             String formattedLoginTime = loggedInDoctors.get(i).getLoginTime().format(formatter);
-            System.out.printf("%-8d %-25s %-20s %-15s\n", loggedInDoctors.get(i).getId(), 
-                                                                    loggedInDoctors.get(i).getName(),
-                                                                    formattedLoginTime,
-                                                                    loggedInDoctors.get(i).getSpecialty());
+            System.out.printf("%-8d %-25s %-18s %-15s\n", loggedInDoctors.get(i).getId(),
+                    loggedInDoctors.get(i).getName(),
+                    formattedLoginTime,
+                    loggedInDoctors.get(i).getSpecialty());
         }
         System.out.println("-----------------------------------");
     }

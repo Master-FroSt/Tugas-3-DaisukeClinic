@@ -1,10 +1,14 @@
 package system;
 
 import datastructure.LinkedList;
+import entity.Appointment;
 import entity.Doctor;
 import entity.Patient;
 import handler.*;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
 public class AdminMenu {
@@ -45,9 +49,9 @@ public class AdminMenu {
                     DoctorRecordService.updateDoctorTXT();
                 }
                 case "7" -> viewLoggedInDoctors();
-//                 case "8" -> AppointmentQueueService.viewUpcomingAppointments();
-//                 case "9" -> AppointmentQueueService.processNextAppointment();
-//                 case "10" -> displayAppointments();
+                 case "8" -> scheduleAppointment();
+                 case "9" -> processAppointments();
+                 case "10" -> displayAppointments();
                 case "11" -> searchPatientById();
                 case "12" -> displayPatientsInOrder();
                 case "13" -> {
@@ -169,22 +173,73 @@ public class AdminMenu {
     }
 
     // =========================== funtion 7 ===========================
-    private static void viewLoggedInDoctors() {
+    static void viewLoggedInDoctors() {
         System.out.println("\n======= View Logged-in Doctors =======");
         DoctorLoginService.getAllLoggedInDoctors();
     }
 
     // =========================== funtion 8, 9, 10 (optional, uncomment if needed) ===========================
-    // private static void displayAppointments() {
-    //     System.out.println("\n======= Display Upcoming Appointments =======");
-    //     AppointmentQueueService.viewUpcomingAppointments();
-    // }
+
+    static void scheduleAppointment() {
+         System.out.println("\n======= Schedule Appointment =======");
+//         mencari ID pasien
+         boolean isPatientID = false;
+         int idPatient;
+         Patient check;
+         do {
+             idPatient = Helper.integerInput(scanner, "Masukkan ID Patient: ");
+             check = PatientSearchTreeService.getPatientTree().containsID(idPatient);
+             if(!PatientRecordService.getPatientList().contains(check)) {
+                 continue;
+             }
+             isPatientID = true;
+         } while(!isPatientID);
+         // doctor
+         int idDoctor;
+        Doctor localDoctor;
+        boolean isDoctorID = false;
+        do {
+            System.out.println("Available Doctors:");
+            DoctorLoginService.getAllLoggedInDoctors();
+            idDoctor = Helper.integerInput(scanner, "Masukkan ID Doctor: ");
+            for (int i = 0; i <  DoctorRecordService.getAllDoctors().size(); i++) {
+                if (DoctorRecordService.getAllDoctors().get(i).getId() == idDoctor) {
+                    isDoctorID = true;
+                    localDoctor = DoctorRecordService.getAllDoctors().get(i);
+                } else {
+                    continue;
+                }
+            }
+        } while (!isDoctorID);
+        idPatient = Helper.integerInput(scanner, "Masukkan ID Patient: ");
+        LocalDateTime base = LocalDateTime.of(2025, 6, 1, 0, 0);
+        LocalDateTime now = LocalDateTime.now();
+        int idAppointment = (int) ChronoUnit.SECONDS.between(base, now);
+//        Belum ada penentuan waktu appointment
+        LocalDateTime timeAppointment = LocalDateTime.now();
+
+        Appointment newAppointment = new Appointment(idAppointment, idPatient, idDoctor, timeAppointment);
+        AppointmentQueueService.scheduleAppointment(newAppointment);
+//        Belom ada cara bikin queue perdokter
+        AppointmentQueueService queueApp = new AppointmentQueueService();
+//        localDoctor.setQueueApp(queueApp);
+     }
+
+     static void processAppointments() {
+         System.out.println("\n======= Process Appointment =======");
+         AppointmentQueueService.processNextAppointment();
+     }
+
+     static void displayAppointments() {
+         System.out.println("\n======= Display Upcoming Appointments =======");
+         AppointmentQueueService.viewUpcomingAppointments();
+     }
 
     // =========================== funtion 11 ===========================
     private static void searchPatientById() {
         System.out.println("\n======= Search Patient by ID =======");
         int idPasien = Helper.integerInput(scanner, "Enter Patient ID to search: ");
-        PatientRecordService.findPatientById(idPasien);
+        PatientSearchTreeService.searchPatient(idPasien);
     }
 
     // =========================== funtion 12 ===========================

@@ -17,7 +17,7 @@ public class Patient {
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.illnessHistory = new LinkedList<>();
-        illnessHistory.addFirst(" ");
+        illnessHistory.addFirst("Null");
     }
 
     // ==================================== Getter ====================================
@@ -57,5 +57,10 @@ public class Patient {
         System.out.println("Address\t\t: " + address);
         System.out.println("Phone Number\t: " + phoneNumber);
         System.out.println("Ilness History\t: " + illnessHistory.toString());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ID: %04d | Name: %-25s | Age: %d", ID, name, age);
     }
 }

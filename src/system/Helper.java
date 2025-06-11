@@ -20,7 +20,6 @@ public class Helper {
     public static void pressEnter(Scanner scanner) {
         System.out.print("\n\nPress Enter to Continue....");
         scanner.nextLine(); // Wait for Enter key
-        System.out.println("\n\n\n"); // aslinya nggak ini
 //         clearScreen();
     }
 }

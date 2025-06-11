@@ -1,12 +1,9 @@
 package system;
 
-// import entity.Appointment;
+import entity.Appointment;
 import entity.Doctor;
 import entity.Patient;
-// import handler.AppointmentQueueService;
-import handler.DoctorLoginService;
-import handler.DoctorRecordService;
-import handler.PatientRecordService;
+import handler.*;
 import java.util.Scanner;
 
 /**
@@ -23,8 +20,8 @@ public class PatientMenu {
 
             switch (choice) {
                 case "1" -> searchPatientSelf(scanner);
-                case "2" -> viewLoggedInDoctors();
-                case "3" -> scheduleAppointment(scanner);
+                case "2" -> AdminMenu.viewLoggedInDoctors();
+                case "3" -> AdminMenu.scheduleAppointment();
                 case "0" -> System.out.println("\nReturning to main login portal...");
                 default -> System.out.println("Invalid choice. Please try again.");
             }
@@ -45,36 +42,6 @@ public class PatientMenu {
     private static void searchPatientSelf(Scanner scanner) {
         System.out.println("\n--- View My Patient Record ---");
         int id = Helper.integerInput(scanner, "Enter your Patient ID: ");
-        PatientRecordService.findPatientById(id);
-    }
-
-    private static void viewLoggedInDoctors() {
-        System.out.println("\n--- Available Doctors ---");
-        DoctorLoginService.getAllLoggedInDoctors();
-    }
-
-    private static void scheduleAppointment(Scanner scanner) {
-        System.out.println("\n--- Schedule an Appointment ---");
-        int patientId = Helper.integerInput(scanner, "Enter your Patient ID: ");
-        Patient patient = PatientRecordService.findPatientById(patientId);
-
-        if (patient == null) {
-            System.out.println("Could not find a patient with that ID.");
-            return;
-        }
-
-        System.out.println("\nThese doctors are currently logged in:");
-        DoctorLoginService.getAllLoggedInDoctors();
-        int doctorId = Helper.integerInput(scanner, "\nEnter the ID of the doctor you wish to see: ");
-        Doctor doctor = DoctorRecordService.findDoctorById(doctorId);
-
-        if (doctor == null) {
-            System.out.println("Could not find a doctor with that ID.");
-            return;
-        }
-
-//         Appointment newAppointment = new Appointment(patient, doctor);
-//         AppointmentQueueService.scheduleAppointment(newAppointment);
-        System.out.println("Feature not implemented yet.");
+        PatientSearchTreeService.searchPatient(id);
     }
 }

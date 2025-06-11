@@ -22,8 +22,8 @@ public class DoctorMenu {
             choice = scanner.nextLine();
 
             switch (choice) {
-                case "1" -> viewUpcomingAppointments();
-                case "2" -> processNextAppointment();
+                case "1" -> AdminMenu.displayAppointments();
+                case "2" -> AdminMenu.processAppointments();
                 case "0" -> logout();
                 default -> System.out.println("Invalid choice. Please try again.");
             }
@@ -64,15 +64,5 @@ public class DoctorMenu {
             currentDoctor = null;
             System.out.println("You have been logged out. Returning to main portal...");
         }
-    }
-
-    private static void viewUpcomingAppointments() {
-//         AppointmentQueueService.viewUpcomingAppointments();
-        System.out.println("Feature not implemented yet.");
-    }
-
-    private static void processNextAppointment() {
-//         AppointmentQueueService.processNextAppointment();
-        System.out.println("Feature not implemented yet.");
     }
 }

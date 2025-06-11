@@ -1,9 +1,7 @@
 package main;
 
 import entity.Doctor;
-import handler.DoctorRecordService;
-import handler.PatientRecordService;
-import handler.PatientSearchTreeService;
+import handler.*;
 import system.AdminMenu;
 import system.DoctorMenu;
 import system.Helper;
@@ -26,8 +24,9 @@ public class Main {
         // Initialize all services
         PatientRecordService.makePatientRecord();
         PatientSearchTreeService.makePatientTree();
-//        AppointmentQueueService.makeAppointmentQueue();
+        AppointmentQueueService.makeAppointmentQueue();
         DoctorRecordService.makeDoctorRecord();
+        DoctorLoginService.makeDoctorLogin();
 
         // Pre-load patient data from file
         PatientRecordService.loadPatientTXT();

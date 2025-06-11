@@ -1,7 +1,6 @@
 package handler;
 
 import datastructure.BST;
-import datastructure.LinkedList;
 import entity.Patient;
 
 public class PatientSearchTreeService {
@@ -15,9 +14,10 @@ public class PatientSearchTreeService {
 
     private static void setNextIdAdded() {
         if (patientTree.isEmpty()) {
-            nextIdAdded = 1; // Start IDs from 1
-        } else {
-            nextIdAdded = patientTree.getMax() + 1;
+            nextIdAdded = 1;
+        }
+        else {
+            nextIdAdded = patientTree.getMax().getID() + 1;
         }
     }
 
@@ -32,7 +32,7 @@ public class PatientSearchTreeService {
             return;
         }
 
-        patientTree.add(patient.getID());
+        patientTree.add(patient);
         setNextIdAdded();
     }
 
@@ -47,7 +47,7 @@ public class PatientSearchTreeService {
             return;
         }
 
-        patientTree.remove(patient.getID());
+        patientTree.remove(patient);
         setNextIdAdded();
     }
 
@@ -58,33 +58,23 @@ public class PatientSearchTreeService {
     public static BST getPatientTree() {
         return patientTree;
     }
-//searchPatient dipanggil oleh Patient Record untuk masukan LinkedList patient
-    public static Patient searchPatient(int id, LinkedList<Patient> allPatients) {
-        // check if the ID exists.
-        if (!patientTree.contains(id)) {
-            System.out.println("\nPatient with ID " + id + " not found in records (checked BST).");
-            return null;
-        }
 
-        // find the full patient object
-        for (int i = 0; i < allPatients.size(); i++) {
-            Patient patient = allPatients.get(i);
-            if (patient.getID() == id) {
-                System.out.println("\nFound patient by ID " + id + ".");
-                patient.displayPatientInfo();
-                return patient;
-            }
+    // searchPatient dipanggil oleh Patient Record untuk masukan LinkedList patient
+    public static void searchPatient(int id) {
+        Patient foundPatient = patientTree.containsID(id);
+        // check if the ID exists.
+        if (foundPatient == (null)) {
+            System.out.println("\nPatient with ID " + id + " not found in records (checked BST).");
+            return;
         }
-        // If data mismatch or not found
-        System.err.println("Data inconsistency: ID " + id + " found in BST but not in the patient list.");
-        return null;
+        // print patient info
+        foundPatient.displayPatientInfo();
     }
 
-     // inOrderDisplay()
-     public static void inOrderDisplay() {
-         System.out.println("\n--- Patients In-Order (CustomBST by ID) ---");
-         patientTree.inOrder();
-         System.out.println("-------------------------------------------");
-
-     }
+    // inOrderDisplay()
+    public static void inOrderDisplay() {
+        System.out.println("\n----------- Patients In-Order -----------");
+        patientTree.inOrder();
+        System.out.println("-------------------------------------------");
+    }
 }

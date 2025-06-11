@@ -2,7 +2,6 @@ package handler;
 
 import datastructure.LinkedList;
 import entity.Doctor;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -25,22 +24,46 @@ public class DoctorRecordService {
     // Buat nyimpen ada specialist apa aja
     private static void makeSpecialistList() {
         specialistList = new LinkedList<>();
-        specialistList.addLast("Internal Medicine Specialist (Dokter Spesialis Penyakit Dalam - Sp.PD)");
-        specialistList.addLast("Obstetrician and Gynecologist (Dokter Spesialis Obstetri dan Ginekologi - Sp.OG)");
-        specialistList.addLast("Pediatrician (Dokter Spesialis Anak - Sp.A)");
-        specialistList.addLast("General Surgeon (Dokter Spesialis Bedah Umum - Sp.B)");
-        specialistList.addLast("Anesthesiologist (Dokter Spesialis Anestesiologi - Sp.An)");
-        specialistList.addLast("Neurologist (Dokter Spesialis Saraf - Sp.N)");
-        specialistList.addLast("Dermatologist and Venereologist (Dokter Spesialis Kulit dan Kelamin - Sp.DV)");
-        specialistList.addLast("Radiologist (Dokter Spesialis Radiologi - Sp.Rad)");
-        specialistList.addLast("Cardiologist (Dokter Spesialis Jantung dan Pembuluh Darah - Sp.JP)");
-        specialistList.addLast("Pulmonologist (Dokter Spesialis Paru - Sp.P)");
+        // open txt
+        try (BufferedReader br = new BufferedReader(new FileReader("src/data/specialist.txt"))) {
+            String line;
+            boolean isFirstline = true;
+
+            while ((line = br.readLine()) != null) {
+                // Skip header
+                if (isFirstline) {
+                    isFirstline = false;
+                    continue;
+                }
+
+                specialistList.addLast(line);
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateSpecialist() {
+        try {
+            FileWriter myWriter = new FileWriter("src/data/specialist.txt");
+            for (int i = 0; i < specialistList.size(); i++) {
+                String localSpecialist = specialistList.get(i);
+                if (localSpecialist != null) {
+                    myWriter.write(localSpecialist + "\n");
+                }
+            }
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
     // Buat auto increment nanti pas register doctor
     private static void makeSpecialistCount() {
         specialistCount = new LinkedList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < specialistList.size(); i++) {
             specialistCount.addLast(0);
         }
     }
@@ -103,7 +126,7 @@ public class DoctorRecordService {
             allDoctors.clear();
         }
 
-        try (BufferedReader br = new BufferedReader(new FileReader("./data/doctor.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/data/doctor.txt"))) {
             String line;
             boolean isFirstline = true;
 
@@ -143,7 +166,7 @@ public class DoctorRecordService {
     // save data to txt
     public static void updateDoctorTXT() {
         try {
-            FileWriter myWriter = new FileWriter("./data/doctor.txt");
+            FileWriter myWriter = new FileWriter("src/data/doctor.txt");
             myWriter.write("Doctor ID | Name | Password | Login Time | Logout Time\n");
             for (int i = 0; i < allDoctors.size(); i++) {
                 Doctor localDoctor = allDoctors.get(i);
