@@ -30,7 +30,6 @@ public class Main {
         PatientRecordService.makePatientRecord();
         PatientSearchTreeService.makePatientTree();
 //        AppointmentQueueService.makeAppointmentQueue();
-        DoctorRecordService.makeDoctorRecord();
 
         // Pre-load patient data from file
         PatientRecordService.loadPatientTXT();
