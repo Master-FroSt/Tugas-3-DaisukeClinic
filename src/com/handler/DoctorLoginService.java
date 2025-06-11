@@ -7,9 +7,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class DoctorLoginService {
-    private static final LinkedList<Doctor> loggedInDoctors = new LinkedList<>();
+    private static LinkedList<Doctor> loggedInDoctors;
 
     private DoctorLoginService() {}
+
+    public static void makeDoctorLogin() {
+        loggedInDoctors = new LinkedList<>();
+    }
 
     public static void loginDoctor(Doctor doctor) {
         if (doctor == null) {
@@ -28,7 +32,7 @@ public class DoctorLoginService {
         doctor.setIsLogin(true);
         doctor.setLogoutTime(null); // Clear any previous logout time.
 
-        loggedInDoctors.addFirst(doctor); // Add to the front of the queue
+        loggedInDoctors.addFirst(doctor); // Add to the front of linked list
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         System.out.println("Dr. " + doctor.getName() + " logged in successfully at " + doctor.getLoginTime().format(formatter));
@@ -36,12 +40,12 @@ public class DoctorLoginService {
 
     // logoutDoctor(int doctorId) → remove by ID
     public static void logoutDoctor(int doctorId) {
-//        Cek jika ID valid
+        // Cek jika ID valid
         if (doctorId < 0) {
             System.err.println("Invalid code.entity.Doctor ID for logout.");
             return;
         }
-//mencari object berdasarkan ID
+        // mencari object berdasarkan ID
         int indexToRemove = -1;
         Doctor doctorToLogout = null;
 
@@ -52,9 +56,9 @@ public class DoctorLoginService {
                 break; // Exit the loop once found
             }
         }
-//        Cek jika penghapusan berhasil
+        // Cek jika penghapusan berhasil
         if (indexToRemove != -1) {
-//            Set logout time
+            //  logout time
             doctorToLogout.setLogoutTime(LocalDateTime.now());
             doctorToLogout.setIsLogin(false);
 
@@ -73,7 +77,16 @@ public class DoctorLoginService {
         }
 
         System.out.println("\n--- Currently Logged-In Doctors ---");
-        loggedInDoctors.printForward();
+        System.out.println("-----------------------------------");
+        System.out.printf("%-8s %-25s %-20s %-15s\n", "ID", "Name" , "Login Time", "Specialist");
+        for (int i = 0; i < loggedInDoctors.size(); i++) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+            String formattedLoginTime = loggedInDoctors.get(i).getLoginTime().format(formatter);
+            System.out.printf("%-8d %-25s %-20s %-15s\n", loggedInDoctors.get(i).getId(), 
+                                                                    loggedInDoctors.get(i).getName(),
+                                                                    formattedLoginTime,
+                                                                    loggedInDoctors.get(i).getSpecialty());
+        }
         System.out.println("-----------------------------------");
     }
 }
