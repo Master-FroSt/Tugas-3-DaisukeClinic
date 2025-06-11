@@ -49,11 +49,13 @@ public class AdminMenu {
                 }
                 case "5" -> {
                     doctorLogin();
+                    DoctorRecordService.updateDoctorTXT();
                     Helper.pressEnter();
                     break;
                 }
                 case "6" -> {
                     doctorLogout();
+                    DoctorRecordService.updateDoctorTXT();
                     Helper.pressEnter();
                     break;
                 }
@@ -87,6 +89,7 @@ public class AdminMenu {
                 }
                 case "13" -> {
                     doctorRegister();
+                    DoctorRecordService.updateDoctorTXT();
                     Helper.pressEnter();
                     break;
                 }
@@ -96,7 +99,9 @@ public class AdminMenu {
                     break;
                 }
                 default -> {
-                    System.out.println("Pilihan tidak valid");
+                    System.out.println("Invalid Input!");
+                    Helper.pressEnter();
+                    run(s);
                 }
             }
             if (!choice.equals("0")) {
@@ -130,22 +135,28 @@ public class AdminMenu {
         System.out.println("10. Display Upcoming Appointments");
         System.out.println("11. Search Patient by ID (BST)");
         System.out.println("12. Display All Patients (BST Inorder)");
-        // System.out.println("13. Register New Doctor");
+        System.out.println("13. Register New Doctor");
         System.out.println("0. Exit");
     }
 
     // =========================== funtion 1 ===========================
-    public static void addNewPatient() {
+    private static void addNewPatient() {
         System.out.println("======= Add New Patient =======\n");
-        int newId = Helper.integerInput(scanner, "Masukkan ID Pasien: "); // input ID
+        int newId = PatientSearchTreeService.getNextIdAdd(); // input ID
         System.out.print("Masukkan Nama Pasien: "); // input name
         String newName = scanner.nextLine();
         int newAge = Helper.integerInput(scanner, "Masukkan Umur Pasien: "); // input age
-        System.out.print("Masukkan Alamat Pasien: "); // input address
-        String newAddress = scanner.nextLine();
+        System.out.println("Masukkan Alamat Pasien: "); // input address
+        System.out.print("Provinsi: ");
+        String provinsi = scanner.nextLine();
+        System.out.print("Kab/Kota: ");
+        String kota = scanner.nextLine();
+        System.out.print("Kecamatan: ");
+        String kec = scanner.nextLine();
+        String newAddress = provinsi + ", " + kota + ", " + kec;
         System.out.print("Masukkan Nomor Telepon Pasien (Contoh 0812-3456-7890): "); // input phone number
         String newPhoneNumber = scanner.nextLine();
-
+        
         Patient newPatient = new Patient(newId, newName, newAge, newAddress, newPhoneNumber);
         PatientRecordService.addPatient(newPatient);
     }
@@ -232,17 +243,54 @@ public class AdminMenu {
 
     // =========================== funtion 13 ===========================
     public static void doctorRegister() {
-        System.out.println("\n======= Register New Doctor =======");
-        int newId = Helper.integerInput(scanner, "Enter new Doctor ID: ");
-        System.out.print("Enter Doctor Name: ");
+        System.out.println("======= Register New Doctor =======\n");
+        System.out.print("Enter Doctor's Name : "); // input name
         String newName = scanner.nextLine();
-        System.out.print("Enter Doctor Specialty: ");
-        String newSpecialty = scanner.nextLine();
-        System.out.print("Enter a temporary Password for the doctor: ");
-        String newPassword = scanner.nextLine();
+        System.out.print("Enter new password : "); // input address
+        String password = scanner.nextLine();
 
-        Doctor newDoctor = new Doctor(newId, newName, newSpecialty, newPassword);
+        boolean isGetSpecialist = false;
+        String specialist = "";
+        int newId = 0;
+        int choosenOption;
+        do {
+            System.out.println("\nChoose doctor specialist");
+            for (int i = 0; i < DoctorRecordService.getSpecialistList().size(); i++) {
+                System.out.println("( " + (i + 1) + " ) " + DoctorRecordService.getSpecialistList().get(i));
+            }
+            System.out.println("( " + (DoctorRecordService.getSpecialistList().size() + 1) + " ) Add new specialist");
+            choosenOption = Helper.integerInput(scanner, "\nOption choosen (1 - " + (DoctorRecordService.getSpecialistList().size() + 1) + " ) : ");
+            if (choosenOption < 1 || choosenOption > (DoctorRecordService.getSpecialistList().size() + 1)) {
+                System.out.println("Input invalid!!");
+            }
+            // spesialis baru
+            else if (choosenOption == (DoctorRecordService.getSpecialistList().size() + 1)) {
+                System.out.println("Input new specialist : ");
+                String newSpecialist = scanner.nextLine();
+                DoctorRecordService.getSpecialistList().addLast(newSpecialist);
+                DoctorRecordService.getSpecialistCount().addLast(1);
+                specialist = newSpecialist;
+                String formattedId = String.format("1%02d%02d", (DoctorRecordService.getSpecialistList().size()), 1);
+                newId = Integer.parseInt(formattedId);
+                isGetSpecialist = true;
+            }
+            else {
+                if (DoctorRecordService.getSpecialistCount().get(choosenOption - 1) > 99) {
+                    System.out.println("Doctor in this specialist is already full!");
+                }
+                else {
+                    DoctorRecordService.getSpecialistCount().set(choosenOption - 1, DoctorRecordService.getSpecialistCount().get(choosenOption - 1) + 1);
+                    specialist = DoctorRecordService.getSpecialistList().get(choosenOption- 1);
+                    int specialistIndex = choosenOption - 1;
+                    int doctorNumber = DoctorRecordService.getSpecialistCount().get(specialistIndex);
+                    String formattedId = String.format("1%02d%02d", specialistIndex + 1, doctorNumber);
+                    newId = Integer.parseInt(formattedId);
+                    isGetSpecialist = true;
+                }
+            }
+        } while (!isGetSpecialist);
+
+        Doctor newDoctor = new Doctor(newId, newName, specialist, password);
         DoctorRecordService.registerDoctor(newDoctor);
     }
-
 }
