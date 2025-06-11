@@ -12,7 +12,7 @@ import com.system.PatientMenu;
 import java.util.Scanner;
 
 public class Main {
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
     public static void main (String[]args){
         // Step 1: Initialize all system services and data ONCE.
         initializeSystem();
@@ -30,6 +30,7 @@ public class Main {
         PatientRecordService.makePatientRecord();
         PatientSearchTreeService.makePatientTree();
 //        AppointmentQueueService.makeAppointmentQueue();
+        DoctorRecordService.makeDoctorRecord();
 
         // Pre-load patient data from file
         PatientRecordService.loadPatientTXT();
@@ -72,7 +73,7 @@ public class Main {
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
-                    Helper.pressEnter();
+                    Helper.pressEnter(scanner);
                     break;
             }
         } while (!choice.equals("0"));
