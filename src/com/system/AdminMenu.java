@@ -8,16 +8,17 @@ import com.handler.*;
 import java.util.Scanner;
 
 public class AdminMenu {
-    private static Scanner scanner = new Scanner(System.in);
+    // Scanner tidak perlu dideklarasi baru, gunakan yang di-pass dari Main
+    private static Scanner scanner;
 
     public static void run(Scanner s){
+        scanner = s;
         if (!login(scanner)) {
             System.out.println("\nAdmin login failed. Returning to main portal.");
             return;
         }
 
         System.out.println("\nAdmin login successful!");
-        scanner = s;
         String choice;
         do {
             showAdminMenu();
@@ -28,86 +29,41 @@ public class AdminMenu {
                 case "1" -> {
                     addNewPatient();
                     PatientRecordService.updatePatientTXT();
-                    Helper.pressEnter();
-                    break;
                 }
                 case "2" -> {
                     removePatientId();
                     PatientRecordService.updatePatientTXT();
-                    Helper.pressEnter();
-                    break;
                 }
-                case "3" -> {
-                    searchPatientName();
-                    Helper.pressEnter();
-                    break;
-                }
-                case "4" -> {
-                    displayPatientList();
-                    Helper.pressEnter();
-                    break;
-                }
+                case "3" -> searchPatientName();
+                case "4" -> displayPatientList();
                 case "5" -> {
                     doctorLogin();
                     DoctorRecordService.updateDoctorTXT();
-                    Helper.pressEnter();
-                    break;
                 }
                 case "6" -> {
                     doctorLogout();
                     DoctorRecordService.updateDoctorTXT();
-                    Helper.pressEnter();
-                    break;
                 }
-                case "7" -> {
-                    viewLoggedInDoctors();
-                    Helper.pressEnter();
-                    break;
-                }
-//                case "8" -> {
-//                    AppointmentQueueService.viewUpcomingAppointments();
-//                    break;
-//                }
-//                case "9" -> {
-//                    AppointmentQueueService.processNextAppointment();
-//                    break;
-//                }
-//                case "10" -> {
-//                    displayAppointments();
-//                    Helper.pressEnter();
-//                    break;
-//                }
-                case "11" -> {
-                    searchPatientById();
-                    Helper.pressEnter();
-                    break;
-                }
-                case "12" -> {
-                    displayPatientsInOrder();
-                    Helper.pressEnter();
-                    break;
-                }
+                case "7" -> viewLoggedInDoctors();
+                // case "8" -> AppointmentQueueService.viewUpcomingAppointments();
+                // case "9" -> AppointmentQueueService.processNextAppointment();
+                // case "10" -> displayAppointments();
+                case "11" -> searchPatientById();
+                case "12" -> displayPatientsInOrder();
                 case "13" -> {
                     doctorRegister();
                     DoctorRecordService.updateDoctorTXT();
-                    Helper.pressEnter();
-                    break;
                 }
                 case "0" -> {
                     System.out.println("Thanks for using Daisuke Clinic!");
                     System.out.println("Exiting.....");
-                    break;
                 }
-                default -> {
-                    System.out.println("Invalid Input!");
-                    Helper.pressEnter();
-                    run(s);
-                }
+                default -> System.out.println("Invalid Input!");
             }
             if (!choice.equals("0")) {
-                Helper.pressEnter();
+                Helper.pressEnter(scanner);
             }
-        } while (!(choice.equals("0")));
+        } while (!choice.equals("0"));
     }
 
     // ==================================================================
@@ -218,15 +174,11 @@ public class AdminMenu {
         DoctorLoginService.getAllLoggedInDoctors();
     }
 
-    // =========================== funtion 8 ===========================
-
-    // =========================== funtion 9 ===========================
-
-    // =========================== funtion 10 ===========================
-//    private static void displayAppointments() {
-//        System.out.println("\n======= Display Upcoming Appointments =======");
-//        AppointmentQueueService.viewUpcomingAppointments();
-//    }
+    // =========================== funtion 8, 9, 10 (optional, uncomment if needed) ===========================
+    // private static void displayAppointments() {
+    //     System.out.println("\n======= Display Upcoming Appointments =======");
+    //     AppointmentQueueService.viewUpcomingAppointments();
+    // }
 
     // =========================== funtion 11 ===========================
     private static void searchPatientById() {

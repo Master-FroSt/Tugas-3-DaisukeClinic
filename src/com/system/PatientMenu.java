@@ -1,9 +1,9 @@
 package com.system;
 
-import com.entity.Appointment;
+// import com.entity.Appointment;
 import com.entity.Doctor;
 import com.entity.Patient;
-//import com.handler.AppointmentQueueService;
+// import com.handler.AppointmentQueueService;
 import com.handler.DoctorLoginService;
 import com.handler.DoctorRecordService;
 import com.handler.PatientRecordService;
@@ -29,7 +29,7 @@ public class PatientMenu {
                 default -> System.out.println("Invalid choice. Please try again.");
             }
             if (!choice.equals("0")) {
-                Helper.pressEnter();
+                Helper.pressEnter(scanner);
             }
         } while (!choice.equals("0"));
     }
@@ -73,8 +73,9 @@ public class PatientMenu {
             return;
         }
 
-
-//        Appointment newAppointment = new Appointment(patient, doctor);
-//        AppointmentQueueService.scheduleAppointment(newAppointment);
+        // Uncomment the following lines if AppointmentQueueService is available
+        // Appointment newAppointment = new Appointment(patient, doctor);
+        // AppointmentQueueService.scheduleAppointment(newAppointment);
+        System.out.println("Feature not implemented yet.");
     }
 }

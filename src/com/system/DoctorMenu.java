@@ -1,10 +1,10 @@
 package com.system;
 
-//import com.handler.AppointmentQueueService;
 import com.handler.DoctorLoginService;
 import com.handler.DoctorRecordService;
 import com.entity.Doctor;
 import java.util.Scanner;
+
 public class DoctorMenu {
 
     private static Doctor currentDoctor = null;
@@ -28,7 +28,7 @@ public class DoctorMenu {
                 default -> System.out.println("Invalid choice. Please try again.");
             }
             if (!choice.equals("0")) {
-                Helper.pressEnter();
+                Helper.pressEnter(scanner);
             }
         } while (!choice.equals("0"));
     }
@@ -47,7 +47,6 @@ public class DoctorMenu {
         System.out.print("Please enter your password: ");
         String password = scanner.nextLine();
 
-        // Use the new authentication method
         Doctor authenticatedDoctor = DoctorRecordService.authenticateDoctor(id, password);
 
         if (authenticatedDoctor != null) {
@@ -68,10 +67,14 @@ public class DoctorMenu {
     }
 
     private static void viewUpcomingAppointments() {
-//        AppointmentQueueService.viewUpcomingAppointments();
+        // Uncomment and implement if AppointmentQueueService is available
+        // AppointmentQueueService.viewUpcomingAppointments();
+        System.out.println("Feature not implemented yet.");
     }
 
     private static void processNextAppointment() {
-//        AppointmentQueueService.processNextAppointment();
+        // Uncomment and implement if AppointmentQueueService is available
+        // AppointmentQueueService.processNextAppointment();
+        System.out.println("Feature not implemented yet.");
     }
 }
