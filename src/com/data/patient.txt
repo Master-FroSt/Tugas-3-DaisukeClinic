@@ -1,0 +1,4 @@
+Patient ID | Name | Age | Address | Phone Number | Illness History
+0000 | kuku | 23 | jateng, solo, solo | 0923-1232-4536 | 
+0001 | Bebek Sawah | 2023 | Jawa, solo, none | 0855-000-1234 | 
+0002 | bobo | 90 | jatim, malang, malangan | 0891-2323-9090 |  

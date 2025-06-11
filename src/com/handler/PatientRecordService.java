@@ -126,7 +126,7 @@ public class PatientRecordService {
         }
         PatientSearchTreeService.getPatientTree().clear();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("./data/patient.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/com/data/patient.txt"))) {
             String line;
             boolean isFirstline = true;
 
