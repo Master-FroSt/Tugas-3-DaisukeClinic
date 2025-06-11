@@ -1,32 +1,46 @@
 package com.datastructure;
 
 public class Queue<T> {
-    private LinkedList<T> queue = new LinkedList<>();
+    private Object[] data;
+    private int front, rear, size, capacity;
 
-    // Method to add new data at the rear
-    public void enqueue(T value) {
-        queue.addLast(value);
+    public Queue(int capacity) {
+        this.capacity = capacity;
+        data = new Object[capacity];
+        front = 0;
+        rear = -1;
+        size = 0;
     }
 
-    // Method to delete the data at the front
+    public void enqueue(T item) {
+        if (size == capacity) throw new IllegalStateException("Queue full");
+        rear = (rear + 1) % capacity;
+        data[rear] = item;
+        size++;
+    }
+
     public T dequeue() {
-        T value = queue.getFirst();
-        queue.removeFirst();
-        return value;
+        if (size == 0) throw new IllegalStateException("Queue empty");
+        T item = (T) data[front];
+        front = (front + 1) % capacity;
+        size--;
+        return item;
     }
 
-    // Method to return the data at the front
-    public T peek() {
-        return queue.getFirst();
-    }
-
-    // Method to check if the stack isEmpty
     public boolean isEmpty() {
-        return queue.isEmpty();
+        return size == 0;
     }
 
-    // Method to get the current number of items
-    public int size() {
-        return queue.size();
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        int count = 0;
+        int idx = front;
+        while (count < size) {
+            sb.append(data[idx]).append("\n");
+            idx = (idx + 1) % capacity;
+            count++;
+        }
+        return sb.toString();
     }
 }
