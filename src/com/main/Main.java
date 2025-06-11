@@ -26,6 +26,7 @@ public class Main {
         // Initialize all services
         PatientRecordService.makePatientRecord();
         PatientSearchTreeService.makePatientTree();
+        DoctorRecordService.makeDoctorRecord();
 
         // Pre-load patient data from file
         PatientRecordService.loadPatientTXT();
