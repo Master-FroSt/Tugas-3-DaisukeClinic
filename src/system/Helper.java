@@ -1,4 +1,4 @@
-package com.system;
+package system;
 
 import java.util.Scanner;
 

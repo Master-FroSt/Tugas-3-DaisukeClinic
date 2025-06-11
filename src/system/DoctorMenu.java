@@ -1,8 +1,8 @@
-package com.system;
+package system;
 
-import com.handler.DoctorLoginService;
-import com.handler.DoctorRecordService;
-import com.entity.Doctor;
+import handler.DoctorLoginService;
+import handler.DoctorRecordService;
+import entity.Doctor;
 import java.util.Scanner;
 
 public class DoctorMenu {
@@ -67,14 +67,12 @@ public class DoctorMenu {
     }
 
     private static void viewUpcomingAppointments() {
-        // Uncomment and implement if AppointmentQueueService is available
-        // AppointmentQueueService.viewUpcomingAppointments();
+//         AppointmentQueueService.viewUpcomingAppointments();
         System.out.println("Feature not implemented yet.");
     }
 
     private static void processNextAppointment() {
-        // Uncomment and implement if AppointmentQueueService is available
-        // AppointmentQueueService.processNextAppointment();
+//         AppointmentQueueService.processNextAppointment();
         System.out.println("Feature not implemented yet.");
     }
 }

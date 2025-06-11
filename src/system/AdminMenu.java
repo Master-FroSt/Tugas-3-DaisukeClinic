@@ -1,9 +1,9 @@
-package com.system;
+package system;
 
-import com.datastructure.LinkedList;
-import com.entity.Doctor;
-import com.entity.Patient;
-import com.handler.*;
+import datastructure.LinkedList;
+import entity.Doctor;
+import entity.Patient;
+import handler.*;
 
 import java.util.Scanner;
 
@@ -45,9 +45,9 @@ public class AdminMenu {
                     DoctorRecordService.updateDoctorTXT();
                 }
                 case "7" -> viewLoggedInDoctors();
-                // case "8" -> AppointmentQueueService.viewUpcomingAppointments();
-                // case "9" -> AppointmentQueueService.processNextAppointment();
-                // case "10" -> displayAppointments();
+//                 case "8" -> AppointmentQueueService.viewUpcomingAppointments();
+//                 case "9" -> AppointmentQueueService.processNextAppointment();
+//                 case "10" -> displayAppointments();
                 case "11" -> searchPatientById();
                 case "12" -> displayPatientsInOrder();
                 case "13" -> {

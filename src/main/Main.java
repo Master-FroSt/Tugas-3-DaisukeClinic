@@ -1,26 +1,23 @@
-package com.main;
+package main;
 
-import com.entity.Doctor;
-import com.handler.DoctorRecordService;
-import com.handler.PatientRecordService;
-import com.handler.PatientSearchTreeService;
-import com.system.AdminMenu;
-import com.system.DoctorMenu;
-import com.system.Helper;
-import com.system.PatientMenu;
+import entity.Doctor;
+import handler.DoctorRecordService;
+import handler.PatientRecordService;
+import handler.PatientSearchTreeService;
+import system.AdminMenu;
+import system.DoctorMenu;
+import system.Helper;
+import system.PatientMenu;
 
 import java.util.Scanner;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     public static void main (String[]args){
-        // Step 1: Initialize all system services and data ONCE.
         initializeSystem();
 
-        // Step 2: Run the main login loop.
         runLoginPortal();
 
-        // Step 3: Close the scanner when the program truly exits.
         scanner.close();
     }
     public static void initializeSystem() {

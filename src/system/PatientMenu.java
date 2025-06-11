@@ -1,12 +1,12 @@
-package com.system;
+package system;
 
-// import com.entity.Appointment;
-import com.entity.Doctor;
-import com.entity.Patient;
-// import com.handler.AppointmentQueueService;
-import com.handler.DoctorLoginService;
-import com.handler.DoctorRecordService;
-import com.handler.PatientRecordService;
+// import entity.Appointment;
+import entity.Doctor;
+import entity.Patient;
+// import handler.AppointmentQueueService;
+import handler.DoctorLoginService;
+import handler.DoctorRecordService;
+import handler.PatientRecordService;
 import java.util.Scanner;
 
 /**
@@ -73,9 +73,8 @@ public class PatientMenu {
             return;
         }
 
-        // Uncomment the following lines if AppointmentQueueService is available
-        // Appointment newAppointment = new Appointment(patient, doctor);
-        // AppointmentQueueService.scheduleAppointment(newAppointment);
+//         Appointment newAppointment = new Appointment(patient, doctor);
+//         AppointmentQueueService.scheduleAppointment(newAppointment);
         System.out.println("Feature not implemented yet.");
     }
 }

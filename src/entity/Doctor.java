@@ -1,6 +1,6 @@
-package com.entity;
+package entity;
 
-import com.handler.AppointmentQueueService;
+import handler.AppointmentQueueService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -1,8 +1,8 @@
-package com.handler;
+package handler;
 
-import com.datastructure.BST;
-import com.datastructure.LinkedList;
-import com.entity.Patient;
+import datastructure.BST;
+import datastructure.LinkedList;
+import entity.Patient;
 
 public class PatientSearchTreeService {
     private static BST patientTree;

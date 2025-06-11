@@ -1,6 +1,6 @@
-package com.entity;
+package entity;
 
-import com.datastructure.LinkedList;
+import datastructure.LinkedList;
 
 public class Patient {
     private int ID;

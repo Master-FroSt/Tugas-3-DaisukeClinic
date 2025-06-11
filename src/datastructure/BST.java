@@ -1,4 +1,4 @@
-package com.datastructure;
+package datastructure;
 
 // TreeNode remains the same, storing an int.
 class TreeNode {

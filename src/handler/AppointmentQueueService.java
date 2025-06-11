@@ -1,7 +1,7 @@
-package com.handler;
+package handler;
 
-import com.datastructure.Queue;
-import com.entity.Appointment;
+import datastructure.Queue;
+import entity.Appointment;
 
 public class AppointmentQueueService {
     // Make the queue instance non-static to avoid shared state issues

@@ -1,7 +1,7 @@
-package com.handler;
+package handler;
 
-import com.datastructure.LinkedList;
-import com.entity.Doctor;
+import datastructure.LinkedList;
+import entity.Doctor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

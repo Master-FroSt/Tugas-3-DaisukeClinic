@@ -1,7 +1,7 @@
-package com.handler;
+package handler;
 
-import com.datastructure.LinkedList;
-import com.entity.Patient;
+import datastructure.LinkedList;
+import entity.Patient;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -126,7 +126,7 @@ public class PatientRecordService {
         }
         PatientSearchTreeService.getPatientTree().clear();
 
-        try (BufferedReader br = new BufferedReader(new FileReader("src/com/data/patient.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/data/patient.txt"))) {
             String line;
             boolean isFirstline = true;
 

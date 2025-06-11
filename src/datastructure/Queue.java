@@ -1,4 +1,4 @@
-package com.datastructure;
+package datastructure;
 
 public class Queue<T> {
     private Object[] data;
@@ -19,6 +19,7 @@ public class Queue<T> {
         size++;
     }
 
+    @SuppressWarnings("unchecked")
     public T dequeue() {
         if (size == 0) throw new IllegalStateException("Queue empty");
         T item = (T) data[front];

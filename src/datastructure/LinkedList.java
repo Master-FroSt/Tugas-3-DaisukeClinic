@@ -1,4 +1,4 @@
-package com.datastructure;
+package datastructure;
 
 class Node<T> {
     // Atribute
