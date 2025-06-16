@@ -1,7 +1,6 @@
 package entity;
 
 import handler.AppointmentQueueService;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -13,6 +12,7 @@ public class Doctor {
     private LocalDateTime loginTime;
     private LocalDateTime logoutTime;
     private boolean isLogin;
+    private boolean isAvaible;  // bisa jadi ga guna
     private AppointmentQueueService queueApp;
 
     public Doctor(int id, String name, String specialty, String password) {
@@ -20,6 +20,8 @@ public class Doctor {
         this.name = name;
         this.specialty = specialty;
         this.password = password;
+        this.isAvaible = false;
+        this.isLogin = false;
         this.loginTime = null;
         this.logoutTime = null;
         this.queueApp = new AppointmentQueueService();  // Queue per doctor?
