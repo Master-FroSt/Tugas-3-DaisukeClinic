@@ -5,9 +5,7 @@ import entity.Appointment;
 import entity.Doctor;
 import entity.Patient;
 import handler.*;
-
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
@@ -33,13 +31,21 @@ public class AdminMenu {
                 case "1" -> {
                     addNewPatient();
                     PatientRecordService.updatePatientTXT();
+                    break;
                 }
                 case "2" -> {
                     removePatientId();
                     PatientRecordService.updatePatientTXT();
+                    break;
                 }
-                case "3" -> searchPatientName();
-                case "4" -> displayPatientList();
+                case "3" -> {
+                    searchPatientName();
+                    break;
+                }
+                case "4" -> {
+                    displayPatientList();
+                    break;
+                }
                 case "5" -> {
                     doctorLogin();
                     DoctorRecordService.updateDoctorTXT();
@@ -49,9 +55,9 @@ public class AdminMenu {
                     DoctorRecordService.updateDoctorTXT();
                 }
                 case "7" -> viewLoggedInDoctors();
-                 case "8" -> scheduleAppointment();
-                 case "9" -> processAppointments();
-                 case "10" -> displayAppointments();
+                case "8" -> scheduleAppointment();
+                case "9" -> processAppointments();
+                case "10" -> displayAppointments();
                 case "11" -> searchPatientById();
                 case "12" -> displayPatientsInOrder();
                 case "13" -> {
@@ -102,22 +108,48 @@ public class AdminMenu {
     // =========================== funtion 1 ===========================
     private static void addNewPatient() {
         System.out.println("======= Add New Patient =======\n");
-        int newId = PatientSearchTreeService.getNextIdAdd(); // input ID
-        System.out.print("Masukkan Nama Pasien: "); // input name
-        String newName = scanner.nextLine();
+        int newId = PatientSearchTreeService.getNextIdAdd(); // input ID (otomatis)
+        System.out.print("Masukkan Password Pasien: "); // input password
+        String newPass = scanner.nextLine();
+        
+        String newName; // input nama
+        do { 
+            System.out.print("Masukkan Nama Pasien (maksimal 25 karakter): ");
+            newName = scanner.nextLine().trim();
+            if (newName.length() > 25) {
+                System.out.println("Nama terlalu panjang. Maksimal 25 karakter.");
+            }
+        } while (newName.length() > 25);
+        
         int newAge = Helper.integerInput(scanner, "Masukkan Umur Pasien: "); // input age
+
         System.out.println("Masukkan Alamat Pasien: "); // input address
-        System.out.print("Provinsi: ");
+        System.out.print("\t>> Provinsi: ");
         String provinsi = scanner.nextLine();
-        System.out.print("Kab/Kota: ");
+        System.out.print("\t>> Kab/Kota: ");
         String kota = scanner.nextLine();
-        System.out.print("Kecamatan: ");
+        System.out.print("\t>> Kecamatan: ");
         String kec = scanner.nextLine();
         String newAddress = provinsi + ", " + kota + ", " + kec;
-        System.out.print("Masukkan Nomor Telepon Pasien (Contoh 0812-3456-7890): "); // input phone number
-        String newPhoneNumber = scanner.nextLine();
+
+        System.out.print("Masukkan Nomor Telepon Pasien (angka saja) (Contoh 081234567890): "); // input phone number
+        String input = scanner.nextLine().trim();
+        // Validasi hanya digit
+        while (!input.matches("\\d+")) {
+            System.out.print("Input tidak valid. Masukkan hanya angka: ");
+            input = scanner.nextLine().trim();
+        }
+        // Format: pisahkan setiap 4 digit
+        StringBuilder formatted = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+            formatted.append(input.charAt(i));
+            if ((i + 1) % 4 == 0 && i != input.length() - 1) {
+                formatted.append("-");
+            }
+        }
+        String newPhoneNumber = formatted.toString();
         
-        Patient newPatient = new Patient(newId, newName, newAge, newAddress, newPhoneNumber);
+        Patient newPatient = new Patient(newId, newPass, newName, newAge, newAddress, newPhoneNumber);
         PatientRecordService.addPatient(newPatient);
     }
 
@@ -132,7 +164,7 @@ public class AdminMenu {
     // =========================== funtion 3 ===========================
     public static void searchPatientName() {
         System.out.println("======= Search Patient by Name =======\n");
-        System.out.println("Masukkan nama Patient: ");
+        System.out.print("Masukkan nama Patient: ");
         String patientName = scanner.nextLine();
         PatientRecordService.findPatientByName(patientName);
     }
@@ -181,21 +213,21 @@ public class AdminMenu {
     // =========================== funtion 8, 9, 10 (optional, uncomment if needed) ===========================
 
     static void scheduleAppointment() {
-         System.out.println("\n======= Schedule Appointment =======");
+        System.out.println("\n======= Schedule Appointment =======");
 //         mencari ID pasien
-         boolean isPatientID = false;
-         int idPatient;
-         Patient check;
-         do {
-             idPatient = Helper.integerInput(scanner, "Masukkan ID Patient: ");
-             check = PatientSearchTreeService.getPatientTree().containsID(idPatient);
-             if(!PatientRecordService.getPatientList().contains(check)) {
-                 continue;
-             }
-             isPatientID = true;
-         } while(!isPatientID);
+        boolean isPatientID = false;
+        int idPatient;
+        Patient check;
+        do {
+            idPatient = Helper.integerInput(scanner, "Masukkan ID Patient: ");
+            check = PatientSearchTreeService.getPatientTree().containsID(idPatient);
+            if(!PatientRecordService.getPatientList().contains(check)) {
+                continue;
+            }
+            isPatientID = true;
+        } while(!isPatientID);
          // doctor
-         int idDoctor;
+        int idDoctor;
         Doctor localDoctor;
         boolean isDoctorID = false;
         do {
@@ -223,17 +255,17 @@ public class AdminMenu {
 //        Belom ada cara bikin queue perdokter
         AppointmentQueueService queueApp = new AppointmentQueueService();
 //        localDoctor.setQueueApp(queueApp);
-     }
+    }
 
-     static void processAppointments() {
-         System.out.println("\n======= Process Appointment =======");
-         AppointmentQueueService.processNextAppointment();
-     }
+    static void processAppointments() {
+        System.out.println("\n======= Process Appointment =======");
+        AppointmentQueueService.processNextAppointment();
+    }
 
-     static void displayAppointments() {
-         System.out.println("\n======= Display Upcoming Appointments =======");
-         AppointmentQueueService.viewUpcomingAppointments();
-     }
+    static void displayAppointments() {
+        System.out.println("\n======= Display Upcoming Appointments =======");
+        AppointmentQueueService.viewUpcomingAppointments();
+    }
 
     // =========================== funtion 11 ===========================
     private static void searchPatientById() {
