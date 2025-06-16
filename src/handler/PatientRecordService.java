@@ -32,7 +32,7 @@ public class PatientRecordService {
         }
         patientList.addLast(patient);
         PatientSearchTreeService.insertPatient(patient);
-        System.out.printf("\nID\t\t: %04d\n", patient.getID());
+        System.out.printf("\nID\t\t: %d\n", patient.getID());
         System.out.println("Name\t\t: " + patient.getName());
         System.out.println("Age\t\t: " + patient.getAge());
         System.out.println("Address\t\t: " + patient.getAddress());
@@ -59,7 +59,7 @@ public class PatientRecordService {
         if (patientToRemove != null) {
             if (patientList.removeByValue(patientToRemove)) {
                 PatientSearchTreeService.removePatient(patientToRemove);
-                System.out.printf("Patient '%s' (ID: %04d) removed.\n", patientToRemove.getName(), id);
+                System.out.printf("Patient '%s' (ID: %d) removed.\n", patientToRemove.getName(), id);
                 return true;
             } else {
                 System.out.println("Failed to remove patient with ID " + id + " from list internals.");
@@ -110,7 +110,7 @@ public class PatientRecordService {
 
         System.out.printf("%-10s %-25s %-5s %-35s %-15s\n", "ID", "Name", "Age", "Address", "Phone Number");
         for (int i = 0; i < patientList.size(); i++) {
-            System.out.printf("%04d       %-25s %-5d %-35s %-15s\n", patientList.get(i).getID(),
+            System.out.printf("%-10d %-25s %-5d %-35s %-15s\n", patientList.get(i).getID(),
                     patientList.get(i).getName(),
                     patientList.get(i).getAge(),
                     patientList.get(i).getAddress(),
@@ -138,24 +138,48 @@ public class PatientRecordService {
                 }
 
                 String[] parts = line.split("\\|");
-                if (parts.length < 6) continue;
+                if (parts.length < 10) continue;
 
                 int ID = Integer.parseInt(parts[0].trim());
-                String Name = parts[1].trim();
-                int age = Integer.parseInt(parts[2].trim());
-                String address = parts[3].trim();
-                String number = parts[4].trim();
+                String pass = parts[1].trim();
+                String Name = parts[2].trim();
+                int age = Integer.parseInt(parts[3].trim());
+                String address = parts[4].trim();
+                String number = parts[5].trim();
 
-                Patient newPatient = new Patient(ID, Name, age, address, number);
+                Patient newPatient = new Patient(ID, pass, Name, age, address, number);
                 addPatient(newPatient);
 
-                String[] tempIllness = parts[5].trim().split("\\,");
-                if (tempIllness.length < 1) continue;
-                LinkedList<String> illness = new LinkedList<>();
-                for (String tempIllnes : tempIllness) {
-                    illness.addFirst(tempIllnes.trim());
+                // Set symptom
+                String[] tempSymptom = parts[6].trim().split("\\,");
+                if (tempSymptom.length < 1) continue;
+                LinkedList<String> symptom = new LinkedList<>();
+                for (String s : tempSymptom) {
+                    symptom.addLast(s.trim());
                 }
-                newPatient.setIlnessHistory(illness);
+                newPatient.setSymptom(symptom);
+
+                // Set diagnosis
+                String[] tempDiagnosis = parts[7].trim().split("\\,");
+                if (tempDiagnosis.length < 1) continue;
+                LinkedList<String> diagnosis = new LinkedList<>();
+                for (String s : tempDiagnosis) {
+                    diagnosis.addLast(s.trim());
+                }
+                newPatient.setDiagnosis(diagnosis);
+
+                // Set Medication
+                String[] tempMedication = parts[8].trim().split("\\,");
+                if (tempMedication.length < 1) continue;
+                LinkedList<String> medication = new LinkedList<>();
+                for (String s : tempMedication) {
+                    medication.addLast(s.trim());
+                }
+                newPatient.setMedication(medication);
+
+                // Set Notes
+                String notes = parts[9].trim();
+                newPatient.setNotes(notes);
             }
         } catch (IOException e) {
             System.out.println("An error occurred.");
@@ -166,28 +190,14 @@ public class PatientRecordService {
     public static void updatePatientTXT() {
         try {
             FileWriter myWriter = new FileWriter("src/data/patient.txt");
-            myWriter.write("Patient ID | Name | Age | Address | Phone Number | Illness History\n");
+            myWriter.write("Patient ID | Password | Name | Age | Address | Phone Number | Symptom | Diagnosis | Medication | Notes\n");
             for (int i = 0; i < patientList.size(); i++) {
                 Patient localPatient = patientList.get(i);
                 if (localPatient != null) {
-                    String localIllness = "";
-                    for (int j = 0; j < localPatient.getIllnessHistory().size(); j++) {
-                        localIllness = localPatient.getIllnessHistory().toString();
-                    }
-                    String patientId;
-                    if (localPatient.getID() < 10) {
-                        patientId = "000" + localPatient.getID();
-                    }
-                    else if (localPatient.getID() < 100) {
-                        patientId = "00" + localPatient.getID();
-                    }
-                    else if (localPatient.getID() < 1000) {
-                        patientId = "0" + localPatient.getID();
-                    }
-                    else {
-                        patientId = "" + localPatient.getID();
-                    }
-                    myWriter.write(patientId + " | " + localPatient.getName() + " | " + localPatient.getAge() + " | " + localPatient.getAddress() + " | " + localPatient.getPhoneNumber() + " | " + localIllness + "\n");
+                    String localSymptom = localPatient.getSymptom().toString();
+                    String localDiagnosis = localPatient.getDiagnosis().toString();
+                    String localMedication = localPatient.getMedication().toString();
+                    myWriter.write(localPatient.getID() + " | " + localPatient.getPassword() + " | " + localPatient.getName() + " | " + localPatient.getAge() + " | " + localPatient.getAddress() + " | " + localPatient.getPhoneNumber() + " | " + localSymptom + " | " + localDiagnosis + " | " + localMedication + " | " + localPatient.getNotes() + "\n");
                 }
             }
             myWriter.close();
