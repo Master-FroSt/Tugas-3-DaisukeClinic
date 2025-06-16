@@ -30,6 +30,8 @@ public class Main {
         // Pre-load patient data from file
         PatientRecordService.loadPatientTXT();
         DoctorRecordService.loadDoctorTXT();
+        ScheduleRecord.loadScheduleTXT();
+
 
         // Pre-load some doctors into the new DoctorRecordService
         DoctorRecordService.registerDoctor(new Doctor(101, "Asep Surasep", "Cardiology", "pass101"));
