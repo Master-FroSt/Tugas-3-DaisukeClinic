@@ -4,20 +4,31 @@ import datastructure.LinkedList;
 
 public class Patient {
     private int ID;
+    private String password;
     private String name;
     private int age;
     private String address;
     private String phoneNumber;
-    private LinkedList<String> illnessHistory; // used later
+    private LinkedList<String> symptom; // lebih ke keluhan
+    private LinkedList<String> diagnosis;
+    private LinkedList<String> medication;
+    private String notes;
 
-    public Patient(int id, String name, int age, String address, String phoneNumber) {
+
+    public Patient(int id, String password, String name, int age, String address, String phoneNumber) {
         this.ID = id;
+        this.password = password;
         this.name = name;
         this.age = age;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.illnessHistory = new LinkedList<>();
-        illnessHistory.addFirst("Null");
+        this.symptom = new LinkedList<>();
+        symptom.addFirst("-");
+        this.diagnosis = new LinkedList<>();
+        diagnosis.addFirst("-");
+        this.medication = new LinkedList<>();
+        medication.addFirst("-");
+        this.notes = "-";
     }
 
     // ==================================== Getter ====================================
@@ -26,7 +37,11 @@ public class Patient {
     public int getAge() { return age; }
     public String getAddress() { return address; }
     public String getPhoneNumber() { return phoneNumber; }
-    public LinkedList<String> getIllnessHistory() { return illnessHistory; }
+    public String getPassword() { return password;}
+    public LinkedList<String> getSymptom() { return symptom; }
+    public LinkedList<String> getDiagnosis() { return diagnosis; }
+    public LinkedList<String> getMedication() { return medication; }
+    public String getNotes() { return notes;}
 
     // ==================================== Setter ====================================
     public void setName(String name) {
@@ -45,8 +60,24 @@ public class Patient {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setIlnessHistory(LinkedList<String> illnessHistory) {
-        this.illnessHistory = illnessHistory;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setSymptom(LinkedList<String> symptom) {
+        this.symptom = symptom;
+    }
+
+    public void setDiagnosis(LinkedList<String> diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+
+    public void setMedication(LinkedList<String> medication) {
+        this.medication = medication;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     // ==================================== Display patient ====================================
@@ -56,7 +87,9 @@ public class Patient {
         System.out.println("Age\t\t: " + age);
         System.out.println("Address\t\t: " + address);
         System.out.println("Phone Number\t: " + phoneNumber);
-        System.out.println("Ilness History\t: " + illnessHistory.toString());
+        System.out.println("Symptom\t: " + symptom.toString());
+        System.out.println("Diagnosis\t: " + diagnosis.toString());
+        System.out.println("Medication\t: " + medication.toString());
     }
 
     @Override
