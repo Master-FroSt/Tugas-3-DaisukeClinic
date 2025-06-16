@@ -4,13 +4,15 @@ import datastructure.LinkedList;
 import entity.Appointment;
 import entity.Doctor;
 import entity.Patient;
+import entity.Schedule;
 import handler.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
 public class AdminMenu {
-    // Scanner tidak perlu dideklarasi baru, gunakan yang di-pass dari Main
     private static Scanner scanner;
 
     public static void run(Scanner s){
@@ -31,20 +33,16 @@ public class AdminMenu {
                 case "1" -> {
                     addNewPatient();
                     PatientRecordService.updatePatientTXT();
-                    break;
                 }
                 case "2" -> {
                     removePatientId();
                     PatientRecordService.updatePatientTXT();
-                    break;
                 }
                 case "3" -> {
                     searchPatientName();
-                    break;
                 }
                 case "4" -> {
                     displayPatientList();
-                    break;
                 }
                 case "5" -> {
                     doctorLogin();
@@ -63,6 +61,9 @@ public class AdminMenu {
                 case "13" -> {
                     doctorRegister();
                     DoctorRecordService.updateDoctorTXT();
+                }
+                case "14" -> {
+                    // fucnt 14
                 }
                 case "0" -> {
                     System.out.println("Thanks for using Daisuke Clinic!");
@@ -102,15 +103,14 @@ public class AdminMenu {
         System.out.println("11. Search Patient by ID (BST)");
         System.out.println("12. Display All Patients (BST Inorder)");
         System.out.println("13. Register New Doctor");
+        System.out.println("14. Make doctor schedule");
         System.out.println("0. Exit");
     }
 
-    // =========================== funtion 1 ===========================
+    // =========================== function 1 ===========================
     private static void addNewPatient() {
         System.out.println("======= Add New Patient =======\n");
         int newId = PatientSearchTreeService.getNextIdAdd(); // input ID (otomatis)
-        System.out.print("Masukkan Password Pasien: "); // input password
-        String newPass = scanner.nextLine();
         
         String newName; // input nama
         do { 
@@ -120,6 +120,9 @@ public class AdminMenu {
                 System.out.println("Nama terlalu panjang. Maksimal 25 karakter.");
             }
         } while (newName.length() > 25);
+
+        System.out.print("Masukkan Password Pasien: "); // input password
+        String newPass = scanner.nextLine();
         
         int newAge = Helper.integerInput(scanner, "Masukkan Umur Pasien: "); // input age
 
@@ -178,11 +181,29 @@ public class AdminMenu {
     // =========================== funtion 5 ===========================
     private static void doctorLogin() {
         System.out.println("\n======= Doctor Login =======");
-        System.out.println("All Registered Doctors:");
+        System.out.println("Doctors Available Now:");
+
+        int today = LocalDate.now().getDayOfWeek().getValue(); // 1=Mon, ..., 7=Sun
+        LocalTime now = LocalTime.now();
+
         LinkedList<Doctor> allDoctors = DoctorRecordService.getAllDoctors();
-        for(int i = 0; i < allDoctors.size(); i++) {
+        LinkedList<Schedule> allSchedules = ScheduleRecord.getScheduleList();
+
+        for (int i = 0; i < allDoctors.size(); i++) {
             Doctor d = allDoctors.get(i);
-            System.out.printf("  ID: %d, Name: Dr. %s, Specialty: %s\n", d.getId(), d.getName(), d.getSpecialty());
+
+            for (int j = 0; j < allSchedules.size(); j++) {
+                Schedule s = allSchedules.get(j);
+
+                if (s.getDoctorId() == d.getId() &&
+                    s.getDay() == today &&
+                    !now.isBefore(s.getBeginTime()) &&
+                    !now.isAfter(s.getFinishTime())) {
+
+                    System.out.printf("  ID: %d, Name: Dr. %s, Specialty: %s\n", d.getId(), d.getName(), d.getSpecialty());
+                    break; // avoid printing duplicates
+                }
+            }
         }
 
         int idDokter = Helper.integerInput(scanner, "\nEnter Doctor ID to login: ");
@@ -267,20 +288,20 @@ public class AdminMenu {
         AppointmentQueueService.viewUpcomingAppointments();
     }
 
-    // =========================== funtion 11 ===========================
+    // =========================== function 11 ===========================
     private static void searchPatientById() {
         System.out.println("\n======= Search Patient by ID =======");
         int idPasien = Helper.integerInput(scanner, "Enter Patient ID to search: ");
         PatientSearchTreeService.searchPatient(idPasien);
     }
 
-    // =========================== funtion 12 ===========================
+    // =========================== function 12 ===========================
     private static void displayPatientsInOrder() {
         System.out.println("\n======= Display All Patients (Sorted by ID) =======");
         PatientSearchTreeService.inOrderDisplay();
     }
 
-    // =========================== funtion 13 ===========================
+    // =========================== function 13 ===========================
     public static void doctorRegister() {
         System.out.println("======= Register New Doctor =======\n");
         System.out.print("Enter Doctor's Name : "); // input name
@@ -332,4 +353,6 @@ public class AdminMenu {
         Doctor newDoctor = new Doctor(newId, newName, specialist, password);
         DoctorRecordService.registerDoctor(newDoctor);
     }
+
+    // =========================== funtion 14 ===========================
 }
