@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class DoctorRecordService {
@@ -151,11 +152,17 @@ public class DoctorRecordService {
                 LocalDateTime login = reLogin.equals("null") ? null : LocalDateTime.parse(reLogin);
                 LocalDateTime logout = reLogout.equals("null") ? null : LocalDateTime.parse(reLogout);
 
-
                 Doctor newDoctor = new Doctor(ID, name, specialist, password);
                 newDoctor.setLoginTime(login);
                 newDoctor.setLogoutTime(logout);
                 registerDoctor(newDoctor);
+
+                if (newDoctor.getLoginTime() != null && newDoctor.getLoginTime().toLocalDate().equals(LocalDate.now()) && newDoctor.getLogoutTime() == null) {
+                    newDoctor.setIsLogin(true);
+                }
+                else {
+                    newDoctor.setIsLogin(false);
+                }
             }
         } catch (IOException e) {
             System.out.println("An error occurred.");
