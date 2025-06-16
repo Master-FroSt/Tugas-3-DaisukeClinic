@@ -48,3 +48,4 @@ public class AppointmentQueueService {
         return appointmentQueue.isEmpty();
     }
 }
+

@@ -9,6 +9,8 @@ import handler.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
@@ -63,7 +65,8 @@ public class AdminMenu {
                     DoctorRecordService.updateDoctorTXT();
                 }
                 case "14" -> {
-                    // fucnt 14
+                    makeDoctorSchedule();
+                    
                 }
                 case "0" -> {
                     System.out.println("Thanks for using Daisuke Clinic!");
@@ -355,4 +358,25 @@ public class AdminMenu {
     }
 
     // =========================== funtion 14 ===========================
+    public static void makeDoctorSchedule() {
+    System.out.println("======= Make Doctor Schedule =======\n");
+    int idDoctor = Helper.integerInput(scanner, "Masukkan ID Doctor: ");
+    Doctor doctor = DoctorRecordService.findDoctorById(idDoctor);
+    if (doctor == null) {
+        System.out.println("Doctor with ID " + idDoctor + " not found.");
+        return;
+    }
+
+    int day = Helper.integerInput(scanner, "Masukkan hari (1=Senin => 7=Minggu): ");
+    LocalTime beginTime = Helper.timeInput(scanner, "Masukkan waktu mulai (HH:mm): ");
+    LocalTime finishTime = Helper.timeInput(scanner, "Masukkan waktu selesai (HH:mm): ");
+
+    Schedule newSchedule = new Schedule(idDoctor, day, beginTime, finishTime);
+    ScheduleRecord.addSchedule(newSchedule);
+
+    // Simpan ke file dengan format: ID|day|beginTime|finishTime
+    // String newSchedule = idDoctor + "|" + day + "|" + beginTime + "|" + finishTime;
+    ScheduleRecord.saveScheduleToTXT("src/data/schedule.txt", newSchedule);
+}
+
 }

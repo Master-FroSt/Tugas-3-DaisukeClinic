@@ -3,7 +3,9 @@ package handler;
 import datastructure.LinkedList;
 import entity.Schedule;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalTime;
 
@@ -58,6 +60,17 @@ public class ScheduleRecord {
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
+        }
+    }
+
+    public static void saveScheduleToTXT(String filePath, Schedule schedule){
+          try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+            // Format: ID|day|beginTime|finishTime
+            String line = schedule.getDoctorId() + " | " + schedule.getDay() + " | " + schedule.getBeginTime() + " | " + schedule.getFinishTime();
+            writer.write(line);
+            writer.newLine();
+        } catch (IOException e) {
+            System.out.println("Gagal menyimpan jadwal: " + e.getMessage());
         }
     }
 }

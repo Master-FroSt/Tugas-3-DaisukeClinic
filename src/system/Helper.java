@@ -1,5 +1,8 @@
 package system;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Helper {
@@ -21,5 +24,18 @@ public class Helper {
         System.out.print("\n\nPress Enter to Continue....");
         scanner.nextLine(); // Wait for Enter key
 //         clearScreen();
+    }
+
+    public static LocalTime timeInput(Scanner scanner, String prompt) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine();
+            try {
+                return LocalTime.parse(input, formatter);
+            } catch (DateTimeParseException e) {
+                System.out.println("Format waktu tidak valid. Gunakan format HH:mm (contoh: 08:30).");
+            }
+        }
     }
 }
