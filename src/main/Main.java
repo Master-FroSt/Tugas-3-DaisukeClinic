@@ -2,12 +2,11 @@ package main;
 
 import entity.Doctor;
 import handler.*;
+import java.util.Scanner;
 import system.AdminMenu;
 import system.DoctorMenu;
 import system.Helper;
 import system.PatientMenu;
-
-import java.util.Scanner;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
@@ -30,6 +29,7 @@ public class Main {
 
         // Pre-load patient data from file
         PatientRecordService.loadPatientTXT();
+        DoctorRecordService.loadDoctorTXT();
 
         // Pre-load some doctors into the new DoctorRecordService
         DoctorRecordService.registerDoctor(new Doctor(101, "Asep Surasep", "Cardiology", "pass101"));
