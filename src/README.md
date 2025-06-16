@@ -1,12 +1,12 @@
 Deskripsi Program, fitur (+ SS)
-SS
 Login Page
+SS
 User memasukkan ID dan password untuk memiliki akses dokter atau admin. Setiap dokter memiliki akun yang berbeda sesuai dengan ID. Pasien dapat login dengan [ID saja?]
 
-SS
 Menu dengan akses admin
+SS
 Admin memiliki akses untuk semua menu dalam program DaisukeClinic, diantaranya sebagai berikut.
-[Copas text menu 1-13 di sini]
+[Copas text menu 1-14 di sini]
 
 [1. SS tampilan isi pasien hingga pesan "Patient with the data above added to records"]
 Fitur tambah pasien
@@ -50,23 +50,31 @@ Program menampilkan sebuah tabel berisi data pasien
 Fitur mendaftarkan dokter baru
 User memasukkan nama dokter, password baru, dan pilihan spesialisasi untuk mendaftarkannya ke record.
 
-SS 
+[14. SS]
+Fitur membuat jadwal dokter
+
 Menu dengan akses dokter
+SS 
 Ketika masuk sebagai dokter, ia akan ditandai telah login.
 Fitur pada akses dokter memiliki perilaku yang sama dengan akses admin, tetapi terbatas. Menu tersebut diantaranya: 
 [Copas text menu dokter]
 
 Menu dengan akses pasien
+SS
 Fitur pada akses pasien memiliki perilaku yang sama dengan akses admin, tetapi terbatas. Menu tersebut diantaranya: 
 [Copas text menu pasien]
 
 ===================================================
 
 Langkah alur algoritma dan spesifikasi (+ SS)
-
 Algoritma pada sistem utama main + helper
 [SS pemanggilan modul handler]
-File main.java menginisialisasi scanner untuk masukan. Pada method main, initializeSystem() dan runLoginPortal() dipanggil, kemudian scanner ditutup. Method initializeSystem digunakan untuk mendeklarasikan modul handler diantaranya queue untuk appointment, record untuk pasien dan dokter, sistem login dokter, dan sistem tree pasien. Setelah itu, ia memuat data pasien pada file TXT.
+File main.java menginisialisasi scanner untuk masukan. Pada method main, initializeSystem() dan runLoginPortal() dipanggil, kemudian scanner ditutup. Method initializeSystem digunakan untuk mendeklarasikan modul handler diantaranya,
+Record untuk pasien dan dokter.
+Sistem tree pasien.
+Sistem login dokter.
+Queue untuk appointment.
+Selain itu, ia juga memuat data-data dari file TXT yaitu data pasien, dokter, dan jadwal dokter.
 [SS conditional switch untuk login]
 Method runLoginPortal digunakan sebagai interface untuk memisahkan akses antara admin, dokter, dan pasien dengan sistem identifikasi ID dan password [belum ganti baru].
 [SS file Helper.java]
@@ -74,13 +82,50 @@ File Helper.java berisi dua method, yaitu method integerInput dengan argument Sc
 
 Algoritma pada record pasien dan dokter
 SS
-Object Patient memiliki enam properti diantaranya ID, name,age, address, phoneNumber, dan illnessHistory. Constructor menggunakan semua properti, kecuali illnessHistory. Semua properti memiliki setter dan getter. Terdapat method displayPatientInfo dan toString bentuk override untuk menampilkan data secara terformat.
+Object Patient memiliki sepuluh properti diantaranya,
+Int ID
+String name
+Int age
+String address
+String phoneNumber
+Linked list bertipe String Symptom
+Linked list bertipe String Diagnosis
+Linked list bertipe String Medication
+String Notes 
+Pada method Constructor, argumen yang digunakan untuk inisialisasi adalah ID, password, name, age, address, dan phoneNumber. Properti lain diinisialisasikan sebagai sebuah string “-”. Semua properti memiliki setter dan getter, kecuali setter untuk ID karena dibuat secara otomatis melalui autoincrement. Terdapat method displayPatientInfo dan toString bentuk override untuk menampilkan data secara terformat.
 SS
-Object doctor memiliki delapan properti diantaranya ID, name, specialty, password, loginTime, logoutTime, isLogin, dan queueApp. Constructor menggunakan empat properti, yaitu ID, name, specialty, dan password. Sama seperti object patient, object doctor memiliki setter, getter, displayDoctorInfo, dan toString bentuk override.
+Object doctor memiliki delapan properti diantaranya,
+Int ID
+String name
+String specialty
+String password
+LocalDateTime loginTime
+LocalDateTime logoutTime
+Boolean isLogin
+AppointmentServiceQueue queueApp.
+Pada method Constructor, argumen yang digunakan untuk inisialisasi adalah ID, name, specialty, dan password. Properti lain diinisialisasikan sebagai false untuk tipe data boolean dan  null untuk tipe data bentukan. Sama seperti object patient, object doctor memiliki setter, getter, displayDoctorInfo, dan toString bentuk override.
 SS
-File PatientRecordService.java memiliki beberapa method diantaranya, constructor makePatientRecord, gettergetPatientList, addPatient dengan argument object Patient, removePatientById dengan argument int, findPatientByName dengan argument String, displayAllPatients, dan dua method untuk manipulasi file. 
+File PatientRecordService.java memiliki beberapa method diantaranya,
+Constructor makePatientRecord
+Getter linked list tipe patient getPatientList
+Return-type void addPatient dengan argument object Patient
+Method validasi error dengan mengecek jika patient yang diberikan argumen kosong atau sudah ada di linked list. Jika tidak error, ia memasukkan object tersebut ke linked list dan tree. Data dari object dicetak dengan format khusus.
+Return-type boolean removePatientById dengan argument int
+Method validasi error dengan mengecek jika ID yang diberikan argumen bernilai kurang dari nol. Jika tidak error, ia membuat peubah bertipe Patient patientToRemove berisi null. ID dari argumen diiterasi dalam linked list. Saat ditemukan, seluruh object dipanggil dengan method get linked list dan disimpan dalam peubah tersebut. Penghapusan dilakukan dengan method removeByValue linked list dan  removePatient tree. Setelah itu, dilakukan validasi dengan pemilihan if jika penghapusan berhasil.
+Return-type void findPatientByName dengan argument String
+Method validasi error dengan mengecek jika nama yang diberikan argumen null atau kosong. Jika tidak error, ia membuat linked list bertipe Patient foundPatient. Nama dari argumen diiterasi dalam linked list untuk dicek dengan method contains. Saat ditemukan, seluruh object dipanggil dengan method get linked list dan disimpan dalam linked list foundPatient. Setelah itu, data object dicetak dengan format khusus.
+Return-type void displayAllPatients
+Dua method return-type void lainnya untuk manipulasi file. 
 SS
-File DoctorRecordService.java memiliki beberapa method diantaranya, constructor {makeDoctorRecord, makeSpecialList, dan makeSpecialistCount}, registerDoctor dengan argument object Doctor, findDoctorByID dengan argument int, authenticateDoctor dengan argument int dan String, getter {getAllDoctors, getSpecialistList, dan getSpecialistCount}, dan dua method untuk manipulasi file.
+File DoctorRecordService.java memiliki beberapa method diantaranya,
+Constructor makeDoctorRecord
+Method mirip constructor return-type void makeSpecialList dan makeSpecialistCount
+Return-type void updateSpecialist
+Return-type void registerDoctor dengan argument object Doctor
+Return-type Doctor findDoctorByID dengan argument int
+Return-type Doctor authenticateDoctor dengan argument int dan String
+Getter return-type masing-masing Doctor, String, dan Integer untuk method getAllDoctors, getSpecialistList, dan getSpecialistCount
+Dua method return-type void lainnya untuk manipulasi file.
 
 Algoritma pada sistem baca/tulis TXT
 File PatientRecordService.java dan DoctorRecordService.java menggunakan beberapa method untuk manipulasi file. Pada PatientRecordService.java, terdapat dua method yang memanfaatkan baca/tulis TXT, yaitu loadPatientTXT dan updatePatientTXT.
@@ -101,6 +146,8 @@ File DoctorLoginService.java memiliki beberapa method diantaranya constructor ma
 Algoritma pada login page [belum ganti baru]
 
 Algoritma pada sistem appointment [belum jadi]
+
+Algoritma pada schedule doctor [belum jadi]
 
 ===================================================
 
