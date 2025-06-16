@@ -14,21 +14,31 @@ public class PatientSearchTreeService {
 
     private static void setNextIdAdded() {
         if (patientTree.isEmpty()) {
-            nextIdAdded = 1;
+            nextIdAdded = 20001;
         }
         else {
-            nextIdAdded = patientTree.getMax().getID() + 1;
+            int currentMaxId = patientTree.getMax().getID();
+            int localNumber = currentMaxId % 10000 + 1; // Naik satu dari bagian belakang
+            int front = currentMaxId / 10000;           // Awalan '2', '21', dst.
+            
+            // Jika sudah penuh 9999, naik awalan-nya
+            if (localNumber > 9999) {
+                front += 1;
+                localNumber = 0;
+            }
+
+            nextIdAdded = front * 10000 + localNumber;
         }
     }
 
     // insertPatient(code.entity.Patient p)
     public static void insertPatient(Patient patient) {
         if (patient == null) {
-            System.out.println("Cannot insert null patient into code.datastructure.BST.");
+            System.out.println("Cannot insert null patient into datastructure.BST.");
             return;
         }
         if (patient.getID() < 0) {
-            System.out.println("code.entity.Patient ID cannot be negative. Not inserting into code.datastructure.BST.");
+            System.out.println("code.entity.Patient ID cannot be negative. Not inserting into datastructure.BST.");
             return;
         }
 
@@ -39,7 +49,7 @@ public class PatientSearchTreeService {
     // Method to remove patient ID to tree
     public static void removePatient(Patient patient) {
         if (patient == null) {
-            System.out.println("Cannot remove null patient from code.datastructure.BST.");
+            System.out.println("Cannot remove null patient from datastructure.BST.");
             return;
         }
         if (patient.getID() < 0) {
@@ -59,7 +69,7 @@ public class PatientSearchTreeService {
         return patientTree;
     }
 
-    // searchPatient dipanggil oleh Patient Record untuk masukan LinkedList patient
+    // searchPatient by id, if found then patient details will be printed
     public static void searchPatient(int id) {
         Patient foundPatient = patientTree.containsID(id);
         // check if the ID exists.
