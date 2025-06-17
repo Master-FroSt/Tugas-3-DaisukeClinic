@@ -3,11 +3,11 @@ package handler;
 import datastructure.LinkedList;
 import entity.Schedule;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class ScheduleRecord {
     private static LinkedList<Schedule> scheduleList;
@@ -22,6 +22,17 @@ public class ScheduleRecord {
 
     public static LinkedList<Schedule> getScheduleList() {
         return scheduleList;
+    }
+
+    public static LinkedList<Schedule> getScheduleListByDoctor(int doctorId) {
+        LinkedList<Schedule> result = new LinkedList<>();
+        for (int i = 0; i < scheduleList.size(); i++) {
+            Schedule s = scheduleList.get(i);
+            if (s.getDoctorId() == doctorId) {
+                result.addLast(s);
+            }
+        }
+        return result;
     }
 
     // ====================================== TXT ==============================
@@ -63,14 +74,23 @@ public class ScheduleRecord {
         }
     }
 
-    public static void saveScheduleToTXT(String filePath, Schedule schedule){
-          try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
-            // Format: ID|day|beginTime|finishTime
-            String line = schedule.getDoctorId() + " | " + schedule.getDay() + " | " + schedule.getBeginTime() + " | " + schedule.getFinishTime();
-            writer.write(line);
-            writer.newLine();
+    public static void saveScheduleToTXT() {
+        try {
+            FileWriter myWriter = new FileWriter("src/data/schedule.txt");
+            myWriter.write("Doctor ID | Days | Begin Time | Finish Time\n");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            for (int i = 0; i < scheduleList.size(); i++) {
+                Schedule localSchedule = scheduleList.get(i);
+                if (localSchedule != null) {
+                    String formattedBegin = localSchedule.getBeginTime().format(formatter);
+                    String formattedFinish = localSchedule.getFinishTime().format(formatter);
+                    myWriter.write(localSchedule.getDoctorId() + " | " + localSchedule.getDay() + " | " + formattedBegin + " | " + formattedFinish + "\n");
+                }
+            }
+            myWriter.close();
         } catch (IOException e) {
-            System.out.println("Gagal menyimpan jadwal: " + e.getMessage());
+            System.out.println("An error occurred.");
+            e.printStackTrace();
         }
     }
 }
