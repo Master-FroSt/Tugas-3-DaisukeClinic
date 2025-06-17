@@ -1,6 +1,5 @@
 package entity;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -33,14 +32,21 @@ public class Appointment implements Comparable<Appointment> {
         // We can delegate the comparison directly to the LocalDateTime objects.
         return this.time.compareTo(other.time);
     }
+    
     // ============================== Display appointment ==============================
     public void displayAppointmentInfo() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         String formattedTime = time.format(formatter);
-
         System.out.println("ID appointment\t: " + appointmentId);
         System.out.println("ID pasien\t: " + patientId);
         System.out.println("ID Dokter\t: " + doctorId);
-        System.out.println("Waktu\t\t:" + formattedTime);
+        System.out.println("Waktu\t\t: " + formattedTime);
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        String formattedTime = time.format(formatter);
+        return String.format("ID: %03d | Dr. %-20s | Specialty: %s%s", appointmentId, patientId, doctorId, formattedTime);
     }
 }
