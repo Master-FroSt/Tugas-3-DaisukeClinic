@@ -1,10 +1,10 @@
 # Deskripsi Program
 ## Login Page
-![LoginPage](https://github.com/user-attachments/assets/c7f3f0b9-be55-4864-9d85-aa0a2fa23d7d)
+![LoginPage](https://github.com/user-attachments/assets/c7f3f0b9-be55-4864-9d85-aa0a2fa23d7d)\
 User memasukkan ID dan password untuk memiliki akses pasien, dokter, atau admin. Program mendeteksi login dengan ID yang berformat khusus untuk masing-masing akses.
 
 ## Menu dengan akses admin
-![AdminMenu](https://github.com/user-attachments/assets/42fdd6eb-b34b-4cbe-9ae9-3d7ccf9db935)
+![AdminMenu](https://github.com/user-attachments/assets/42fdd6eb-b34b-4cbe-9ae9-3d7ccf9db935)\
 Admin memiliki akses untuk semua menu dalam program DaisukeClinic, diantaranya sebagai berikut.
 1. Add New Patient
 2. Remove Patient by ID
@@ -23,53 +23,39 @@ Admin memiliki akses untuk semua menu dalam program DaisukeClinic, diantaranya s
 15. See All Doctor Schedule
 
 ### Deskripsi Fitur
-Fitur tambah pasien\
+1. Fitur tambah pasien\
 User memasukkan biodata pasien diantaranya Nama, umur, alamat, dan nomor telepon. Data disimpan pada record.
-
-Fitur hapus pasien\
+2. Fitur hapus pasien\
 User memasukkan ID pasien untuk menghapusnya dari record.
-
-Fitur cari pasien\
+3. Fitur cari pasien\
 User memasukkan nama pasien untuk mencari datanya dalam record.
-
-Fitur tampilkan semua pasien\
+4. Fitur tampilkan semua pasien\
 Program menampilkan sebuah tabel berisi data lengkap pasien
-
-Fitur login dokter\
+5. Fitur login dokter\
 User memilih ID dokter untuk menandainya telah login.
-
-Fitur logout dokter\
+6. Fitur logout dokter\
 User memilih ID dokter untuk menandainya telah logout
-
-Fitur tampilkan dokter tersedia\
+7. Fitur tampilkan dokter tersedia\
 Program menampilkan dokter yang aktif dengan keterangan waktu login dan spesialisasinya
-
-Fitur pembuatan jadwal appointment\
+8. Fitur pembuatan jadwal appointment\
 User membuat appointment sesuai pasien dan dokter yang tersedia
-
-Fitur pemrosesan appointment\
+9. Fitur pemrosesan appointment\
 User melakukan pemrosesan appointment yang tersedia
-
-Fitur melihat appointment yang berjalan\
+10. Fitur melihat appointment yang berjalan\
 Program menampilkan daftar appointment
-
-Fitur cari pasien dengan BST\
+11. Fitur cari pasien dengan BST\
 User memasukkan nama pasien untuk mencari datanya dalam record.
-
-Fitur tampilkan semua pasien dengan BST\
+12. Fitur tampilkan semua pasien dengan BST\
 Program menampilkan sebuah tabel berisi data pasien
-
-Fitur mendaftarkan dokter baru\
+13. Fitur mendaftarkan dokter baru\
 User memasukkan nama dokter, password baru, dan pilihan spesialisasi untuk mendaftarkannya ke record.
-
-Fitur pembuatan jadwal dokter\
+14. Fitur pembuatan jadwal dokter\
 User dapat membuat jadwal untuk dokter tertentu
-
-Fitur melihat jadwal dokter\
+15. Fitur melihat jadwal dokter\
 Program menampilkan seluruh jadwal dokter
 
 ## Menu dengan akses dokter
-![DoctorMenu](https://github.com/user-attachments/assets/d7566d8c-11c2-46c1-ae67-1c9f8a2b2ab0)
+![DoctorMenu](https://github.com/user-attachments/assets/d7566d8c-11c2-46c1-ae67-1c9f8a2b2ab0)\
 Ketika masuk sebagai dokter, ia akan ditandai telah login.\
 Fitur pada akses dokter memiliki perilaku yang sama dengan akses admin, tetapi terbatas. Menu tersebut diantaranya: 
 1. View Upcoming Appointments
@@ -79,7 +65,7 @@ Fitur pada akses dokter memiliki perilaku yang sama dengan akses admin, tetapi t
 0. Logout
 
 ## Menu dengan akses pasien
-![PatientMenu](https://github.com/user-attachments/assets/e9cf740b-2e7b-4c0f-b2e3-716f756e6551)
+![PatientMenu](https://github.com/user-attachments/assets/e9cf740b-2e7b-4c0f-b2e3-716f756e6551)\
 Fitur pada akses pasien memiliki perilaku yang sama dengan akses admin, tetapi terbatas. Menu tersebut diantaranya: 
 1. View My Patient Record
 2. Schedule an Appointment
@@ -87,7 +73,7 @@ Fitur pada akses pasien memiliki perilaku yang sama dengan akses admin, tetapi t
 
 # Langkah alur algoritma dan spesifikasi
 ## Algoritma pada sistem utama main + helper
-![Handler](https://github.com/user-attachments/assets/3a090dc1-ccab-44f6-b06c-0b2c80e763ba)
+![Handler](https://github.com/user-attachments/assets/3a090dc1-ccab-44f6-b06c-0b2c80e763ba)\
 File main.java menginisialisasi scanner untuk masukan. Pada method main, initializeSystem() dan runLoginPortal() dipanggil, kemudian scanner ditutup. Method initializeSystem digunakan untuk mendeklarasikan modul handler diantaranya,
 1. Record untuk pasien, dokter, dan admin.
 2. Sistem tree pasien.
@@ -219,10 +205,10 @@ Pada method Constructor, semua argumen digunakan untuk inisialisasi. Semua prope
 6. Dua method return-type void lainnya untuk manipulasi file.
 
 ## Algoritma pada sistem baca/tulis TXT
-File PatientRecordService.java dan DoctorRecordService.java menggunakan beberapa method untuk manipulasi file. Pada PatientRecordService.java, terdapat dua method yang memanfaatkan baca/tulis TXT, yaitu loadPatientTXT dan updatePatientTXT.\
-Algoritma loadPatientTXT dimulai dengan mengosongkan record patient dalam linked list dan tree. Kemudian, file txt dibaca per baris dan dipisahkan ke peubah pada record. Peubah itu diinialisasi menjadi object patient untuk disimpan pada linked list dan tree. Method ini menggunakan library I/O Java untuk membaca file, yakni package FileReader dan class BufferedReader. FileReader mengambil file yang ingin dibaca, kemudian BufferedReader melakukan operasi baca efisien dengan membaca file ke buffer memori. Metode lebih baik daripada membaca file per karakter. Pada akhir algoritma, terdapat validasi IOexception untuk error pada pembacaan file.\
-Algoritma updatePatientTXT dimulai dengan menghapus isi TXT menggunakan FileWriter. Ia lalu menuliskan format TXT dan melakukan iterasi pada record pasien di linked list. Data pada record ditulis per baris pada TXT dengan format khusus dipisahkan simbol “|”. Method ini menggunakan library I/O Java untuk menulis file, yakni package Writer  dan class FileWriter. FileWriter membuka file dalam mode overwrite untuk menghapus isinya dan menulis data baru. Pada akhir algoritma, terdapat validasi IOexception untuk error pada pembacaan file.\
-Algoritma yang sama digunakan untuk manipulasi file pada DoctorRecordService, AppointmentQueueService, AdminRecordService, dan ScheduleRecord\
+- File PatientRecordService.java dan DoctorRecordService.java menggunakan beberapa method untuk manipulasi file. Pada PatientRecordService.java, terdapat dua method yang memanfaatkan baca/tulis TXT, yaitu loadPatientTXT dan updatePatientTXT.
+- Algoritma loadPatientTXT dimulai dengan mengosongkan record patient dalam linked list dan tree. Kemudian, file txt dibaca per baris dan dipisahkan ke peubah pada record. Peubah itu diinialisasi menjadi object patient untuk disimpan pada linked list dan tree. Method ini menggunakan library I/O Java untuk membaca file, yakni package FileReader dan class BufferedReader. FileReader mengambil file yang ingin dibaca, kemudian BufferedReader melakukan operasi baca efisien dengan membaca file ke buffer memori. Metode lebih baik daripada membaca file per karakter. Pada akhir algoritma, terdapat validasi IOexception untuk error pada pembacaan file.
+- Algoritma updatePatientTXT dimulai dengan menghapus isi TXT menggunakan FileWriter. Ia lalu menuliskan format TXT dan melakukan iterasi pada record pasien di linked list. Data pada record ditulis per baris pada TXT dengan format khusus dipisahkan simbol “|”. Method ini menggunakan library I/O Java untuk menulis file, yakni package Writer  dan class FileWriter. FileWriter membuka file dalam mode overwrite untuk menghapus isinya dan menulis data baru. Pada akhir algoritma, terdapat validasi IOexception untuk error pada pembacaan file.
+- Algoritma yang sama digunakan untuk manipulasi file pada DoctorRecordService, AppointmentQueueService, AdminRecordService, dan ScheduleRecord
 
 # Biodata Kelompok:
 1. L0124074_Rifqia Hani Milatunnisa
@@ -230,7 +216,7 @@ Algoritma yang sama digunakan untuk manipulasi file pada DoctorRecordService, Ap
 3. L0124113_Musyaffa Falih Suryono
 
 ## Pembagian tugas:
-1. Struktur data: {double dan singly Linked List, Stack, AVL Balance Tree}, sistem masukan dan keluaran file (txt), implementasi scanner dan helper untuk mendukung main, implementasi fungsi untuk menu 1-14, format id dokter sesuai spesialis, penyelesaian program.
+1. Struktur data: {double dan singly Linked List, Stack, AVL Balance Tree}, sistem masukan dan keluaran file (txt), implementasi scanner dan helper untuk mendukung main, implementasi fungsi untuk menu 1-15, format id dokter sesuai spesialis, penyelesaian program.
 2. Struktur data: {Queue dan priority queue}, format menu dan validasi, menu schedule  
 3. Struktur data: {BST}, Login page, pemisahan tiga menu {admin, dokter, dan pasien}, penulisan Readme.md
 
