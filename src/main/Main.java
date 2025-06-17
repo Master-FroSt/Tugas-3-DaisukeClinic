@@ -23,11 +23,11 @@ public class Main {
         // Initialize all services
         PatientRecordService.makePatientRecord();
         PatientSearchTreeService.makePatientTree();
-        AppointmentQueueService.makeAppointmentQueue();
         DoctorRecordService.makeDoctorRecord();
         DoctorLoginService.makeDoctorLogin();
 
         // Pre-load patient data from file
+        DoctorLoginService.getLoginList().clear();
         PatientRecordService.loadPatientTXT();
         DoctorRecordService.loadDoctorTXT();
         ScheduleRecord.loadScheduleTXT();
