@@ -3,6 +3,7 @@ package handler;
 import datastructure.LinkedList;
 import entity.Doctor;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,15 +29,8 @@ public class DoctorRecordService {
         // open txt
         try (BufferedReader br = new BufferedReader(new FileReader("src/data/specialist.txt"))) {
             String line;
-            boolean isFirstline = true;
 
             while ((line = br.readLine()) != null) {
-                // Skip header
-                if (isFirstline) {
-                    isFirstline = false;
-                    continue;
-                }
-
                 specialistList.addLast(line);
             }
         } catch (IOException e) {
@@ -58,6 +52,21 @@ public class DoctorRecordService {
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
+        }
+    }
+
+    public static void makeAppointmentTXT(int doctorId) {
+        String fileName = "src/data/appointment/" + doctorId + ".txt";
+        String defaultContent = "Appointment ID | Patient ID | Doctor ID | Time";
+
+        File file = new File(fileName);
+        if (!file.exists()) {
+            try (FileWriter writer = new FileWriter(fileName)) {
+                writer.write(defaultContent.trim());
+            } catch (IOException e) {
+                System.out.println("Error creating appointment data for doctor file.");
+                e.printStackTrace();
+            }
         }
     }
 
@@ -159,10 +168,13 @@ public class DoctorRecordService {
 
                 if (newDoctor.getLoginTime() != null && newDoctor.getLoginTime().toLocalDate().equals(LocalDate.now()) && newDoctor.getLogoutTime() == null) {
                     newDoctor.setIsLogin(true);
+                    DoctorLoginService.loginDoctor(newDoctor);
                 }
                 else {
                     newDoctor.setIsLogin(false);
                 }
+
+                AppointmentQueueService.loadAppointmentData(ID);
             }
         } catch (IOException e) {
             System.out.println("An error occurred.");
