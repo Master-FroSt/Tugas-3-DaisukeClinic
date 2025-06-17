@@ -1,6 +1,7 @@
 package entity;
 
-import handler.AppointmentQueueService;
+import datastructure.PriorityQueue;
+import handler.DoctorRecordService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -12,19 +13,18 @@ public class Doctor {
     private LocalDateTime loginTime;
     private LocalDateTime logoutTime;
     private boolean isLogin;
-    private boolean isAvaible;  // bisa jadi ga guna
-    private AppointmentQueueService queueApp;
+    private PriorityQueue<Appointment> appointmentQueue;
 
     public Doctor(int id, String name, String specialty, String password) {
         this.ID = id;
         this.name = name;
         this.specialty = specialty;
         this.password = password;
-        this.isAvaible = false;
         this.isLogin = false;
         this.loginTime = null;
         this.logoutTime = null;
-        this.queueApp = new AppointmentQueueService();  // Queue per doctor?
+        this.appointmentQueue = new PriorityQueue<>(20);  // Queue per doctor?
+        DoctorRecordService.makeAppointmentTXT(id);
     }
 
     // ============================== Getter ==============================
@@ -35,7 +35,7 @@ public class Doctor {
     public LocalDateTime getLoginTime() { return loginTime; }
     public LocalDateTime getLogoutTime() { return logoutTime; }
     public boolean getIsLogin() { return isLogin; }
-    public AppointmentQueueService getQueueApp() { return queueApp; }
+    public PriorityQueue<Appointment> getAppointmentQueue() { return appointmentQueue; }
 
     // ============================== Setter ==============================
     public void setName(String name) { this.name = name; }
@@ -43,7 +43,6 @@ public class Doctor {
     public void setLoginTime(LocalDateTime loginTime) { this.loginTime = loginTime; }
     public void setLogoutTime(LocalDateTime logoutTime) { this.logoutTime = logoutTime; }
     public void setIsLogin(boolean isLogin) { this.isLogin = isLogin; }
-    public void setQueueApp(AppointmentQueueService queueApp) { this.queueApp = queueApp;}
 
     // ============================== Display doctor ==============================
     public void displayDoctorInfo() {
@@ -67,6 +66,6 @@ public class Doctor {
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String loginStatus = " (Logged in at: " + (loginTime != null ? loginTime.format(formatter) : "N/A") + ")";
-        return String.format("ID: %03d | Dr. %-20s | Specialty: %s%s", ID, name, specialty, loginStatus);
+        return String.format("ID: %-7d | Dr. %-20s | Specialty: %s%s", ID, name, specialty, loginStatus);
     }
 }
