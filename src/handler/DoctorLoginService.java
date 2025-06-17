@@ -88,4 +88,8 @@ public class DoctorLoginService {
         }
         System.out.println("-----------------------------------");
     }
+
+    public static LinkedList<Doctor> getLoginList() {
+        return loggedInDoctors;
+    }
 }
