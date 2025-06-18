@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import system.Helper;
 
 public class ScheduleRecord {
     private static LinkedList<Schedule> scheduleList;
@@ -93,4 +94,48 @@ public class ScheduleRecord {
             e.printStackTrace();
         }
     }
+
+    public static void printAllSchedule() {
+        Helper.clearScreen();
+        if (scheduleList == null || scheduleList.isEmpty()) {
+            System.out.println("Tidak ada data jadwal yang tersedia.");
+            return;
+        }
+
+        System.out.println("\n======= All Doctor Schedules =======\n");
+        System.out.printf("%-10s %-20s %-10s %-12s %-12s\n", "Doctor ID", "Name", "Day", "Begin Time", "Finish Time");
+        System.out.println("--------------------------------------------------------------------------");
+
+        for (int i = 0; i < scheduleList.size(); i++) {
+            Schedule s = scheduleList.get(i);
+            String dayName = getDayName(s.getDay());
+
+            // Ambil nama dokter dari ID
+            String name = "(Unknown)";
+            var doctor = DoctorRecordService.findDoctorById(s.getDoctorId());
+            if (doctor != null) name = doctor.getName();
+
+            System.out.printf("%-10d %-20s %-10s %-12s %-12s\n",
+                s.getDoctorId(),
+                name,
+                dayName,
+                s.getBeginTime().toString(),
+                s.getFinishTime().toString()
+            );
+        }
+    }
+
+    public static String getDayName(int day) {
+        return switch (day) {
+            case 1 -> "Senin";
+            case 2 -> "Selasa";
+            case 3 -> "Rabu";
+            case 4 -> "Kamis";
+            case 5 -> "Jumat";
+            case 6 -> "Sabtu";
+            case 7 -> "Minggu";
+            default -> "Unknown";
+        };
+    }
+
 }

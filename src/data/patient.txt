@@ -1,4 +1,7 @@
 Patient ID | Password | Name | Age | Address | Phone Number | Symptom | Diagnosis | Medication | Notes
-20001 | pass | m | 12 | m, m, m | 1 | - | - | - | -
-20002 | pass | bobo | 90 | jatim, malang, malangan | 0891-2323-9090 | - | - | - | -
-20004 | jus pisang | Suka Semangka | 23 | Jawa Tengah, Solo, Jebres | 0851-0901-8282 | - | - | - | -
+20001 | Madun123 | Madun | 12 | Jateng, Boyolali, Bayak | 0891-2332-9999 | - | - | - | -
+20002 | Bobo123 | Bobo | 30 | jatim, malang, malangan | 0891-2323-9090 | - | - | - | -
+20005 | hijau | pohonnye | 15 | Jawa Tengah, Hutan, Taman FMIPA | 0800-0000-1010 | - | - | - | -
+20006 | Mus123 | Musyaffa | 20 | Jawa Tengah, Klaten, Trucuk | 0811-1222-3334 | - | - | - | -
+20007 | Mus123 | Musyaffa | 20 | Jateng, Klaten, Trucuk | 0811-1222-3334 | - | - | - | -
+20008 | Alf123 | Alfin | 20 | Jateng, Solo, Jebres | 0822-2333-4445 | Sakit nyeri | butuh bius | obat bius 15ml | obat bius habis dalam 3 jam

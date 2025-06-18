@@ -14,57 +14,52 @@ import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
 public class AdminMenu {
-    private static Scanner scanner;
 
     public static void run(Scanner s){
-        scanner = s;
-        if (!login(scanner)) {
-            System.out.println("\nAdmin login failed. Returning to main portal.");
-            return;
-        }
-
-        System.out.println("\nAdmin login successful!");
         String choice;
         do {
             showAdminMenu();
             System.out.print("Pilih menu\t: ");
-            choice = scanner.nextLine();
+            choice = s.nextLine();
 
             switch (choice) {
                 case "1" -> {
-                    addNewPatient();
+                    addNewPatient(s);
                     PatientRecordService.updatePatientTXT();
                 }
                 case "2" -> {
-                    removePatientId();
+                    removePatientId(s);
                     PatientRecordService.updatePatientTXT();
                 }
                 case "3" -> {
-                    searchPatientName();
+                    searchPatientName(s);
                 }
                 case "4" -> {
                     displayPatientList();
                 }
                 case "5" -> {
-                    doctorLogin();
+                    doctorLogin(s);
                     DoctorRecordService.updateDoctorTXT();
                 }
                 case "6" -> {
-                    doctorLogout();
+                    doctorLogout(s);
                     DoctorRecordService.updateDoctorTXT();
                 }
                 case "7" -> viewLoggedInDoctors();
-                case "8" -> scheduleAppointment();
-                case "9" -> { processAppointments(); PatientRecordService.updatePatientTXT(); }
-                case "10" -> displayAppointments();
-                case "11" -> searchPatientById();
+                case "8" -> scheduleAppointment(s);
+                case "9" -> { AppointmentQueueService.processNextAppointment(s); PatientRecordService.updatePatientTXT(); }
+                case "10" -> displayAppointments(s);
+                case "11" -> searchPatientById(s);
                 case "12" -> displayPatientsInOrder();
                 case "13" -> {
-                    doctorRegister();
+                    doctorRegister(s);
                     DoctorRecordService.updateDoctorTXT();
                 }
                 case "14" -> {
-                    makeDoctorSchedule();
+                    makeDoctorSchedule(s);
+                }
+                case "15" -> {
+                    ScheduleRecord.printAllSchedule();
                 }
                 case "0" -> {
                     System.out.println("Thanks for using Daisuke Clinic!");
@@ -73,24 +68,14 @@ public class AdminMenu {
                 default -> System.out.println("Invalid Input!");
             }
             if (!choice.equals("0")) {
-                Helper.pressEnter(scanner);
+                Helper.pressEnter(s);
             }
         } while (!choice.equals("0"));
     }
 
-    // ==================================================================
-    private static boolean login(Scanner scanner) {
-        System.out.println("\n--- Admin Login ---");
-        System.out.print("Enter Admin Username: ");
-        String username = scanner.nextLine();
-        System.out.print("Enter Admin Password: ");
-        String password = scanner.nextLine();
-
-        // cek jika berisi admin
-        return username.equals("admin") && password.equals("admin");
-    }
-    public static void showAdminMenu() {
-        System.out.println("\n==== Data Manager Pro ====");
+    private static void showAdminMenu() {
+        Helper.clearScreen();
+        System.out.println("\n==== Data Manager Pro ====\n");
         System.out.println("1. Add New Patient");
         System.out.println("2. Remove Patient by ID");
         System.out.println("3. Search Patient by Name");
@@ -104,13 +89,15 @@ public class AdminMenu {
         System.out.println("11. Search Patient by ID (BST)");
         System.out.println("12. Display All Patients (BST Inorder)");
         System.out.println("13. Register New Doctor");
-        System.out.println("14. Make doctor schedule");
+        System.out.println("14. Make Doctor Schedule");
+        System.out.println("15. See All Doctor Schedule");
         System.out.println("0. Exit");
     }
 
     // =========================== function 1 ===========================
-    private static void addNewPatient() {
-        System.out.println("======= Add New Patient =======\n");
+    public static void addNewPatient(Scanner scanner) {
+        Helper.clearScreen();
+        System.out.println("\n======= Add New Patient =======\n");
         int newId = PatientSearchTreeService.getNextIdAdd(); // input ID (otomatis)
         
         String newName; // input nama
@@ -158,16 +145,18 @@ public class AdminMenu {
     }
 
     // =========================== function 2 ===========================
-    public static void removePatientId() {
-        System.out.println("======= Remove Patient by ID =======\n");
+    public static void removePatientId(Scanner scanner) {
+        Helper.clearScreen();
+        System.out.println("\n======= Remove Patient by ID =======\n");
         int toRemoveID = Helper.integerInput(scanner, "Masukkan ID Patient: ");
 
         PatientRecordService.removePatientById(toRemoveID);
     }
 
     // =========================== function 3 ===========================
-    public static void searchPatientName() {
-        System.out.println("======= Search Patient by Name =======\n");
+    public static void searchPatientName(Scanner scanner) {
+        Helper.clearScreen();
+        System.out.println("\n======= Search Patient by Name =======\n");
         System.out.print("Masukkan nama Patient: ");
         String patientName = scanner.nextLine();
         PatientRecordService.findPatientByName(patientName);
@@ -175,14 +164,16 @@ public class AdminMenu {
 
     // =========================== function 4 ===========================
     public static void displayPatientList() {
-        System.out.println("======= Display All Patient =======\n");
+        Helper.clearScreen();
+        System.out.println("\n======= Display All Patient =======\n");
         PatientRecordService.displayAllPatients();
     }
 
     // =========================== function 5 ===========================
-    private static void doctorLogin() {
-        System.out.println("\n======= Doctor Login =======");
-        System.out.println("Doctors Available Now:");
+    private static void doctorLogin(Scanner scanner) {
+        Helper.clearScreen();
+        System.out.println("\n======= Doctor Login =======\n");
+        System.out.println("Doctors Available Now (With same schedule, You may login another doctor that not present):");
 
         int today = LocalDate.now().getDayOfWeek().getValue(); // 1=Mon, ..., 7=Sun
         LocalTime now = LocalTime.now();
@@ -220,22 +211,29 @@ public class AdminMenu {
     }
 
     // =========================== function 6 ===========================
-    private static void doctorLogout() {
-        System.out.println("\n======= Doctor Logout =======");
+    private static void doctorLogout(Scanner scanner) {
+        Helper.clearScreen();
+        System.out.println("\n======= Doctor Logout =======\n");
+        for (int i = 0; i < DoctorLoginService.getLoginList().size(); i++) {
+            Doctor d = DoctorLoginService.getLoginList().get(i);
+            System.out.printf("  ID: %d, Name: Dr. %s, Specialty: %s\n", d.getId(), d.getName(), d.getSpecialty());
+        }
         int doctorId = Helper.integerInput(scanner, "Enter Doctor ID to logout: ");
         DoctorLoginService.logoutDoctor(doctorId);
     }
 
     // =========================== function 7 ===========================
     static void viewLoggedInDoctors() {
-        System.out.println("\n======= View Logged-in Doctors =======");
+        Helper.clearScreen();
+        System.out.println("\n======= View Logged-in Doctors =======\n");
         DoctorLoginService.getAllLoggedInDoctors();
     }
 
     // =========================== function 8, 9, 10 (optional, uncomment if needed) ===========================
     // =========================== function 8 ===========================
-    static void scheduleAppointment() {
-        System.out.println("\n======= Schedule Appointment =======");
+    static void scheduleAppointment(Scanner scanner) {
+        Helper.clearScreen();
+        System.out.println("\n======= Schedule Appointment =======\n");
 
         // 1. Pilih spesialisasi
         System.out.println("Daftar Spesialisasi yang Tersedia:");
@@ -307,7 +305,7 @@ public class AdminMenu {
         LinkedList<Schedule> schedules = ScheduleRecord.getScheduleListByDoctor(idDoctor);
         for (int i = 0; i < schedules.size(); i++) {
             Schedule s = schedules.get(i);
-            String namaHari = getDayName(s.getDay()); // s.getDay() mengembalikan int
+            String namaHari = ScheduleRecord.getDayName(s.getDay()); // s.getDay() mengembalikan int
             System.out.println("- Hari " + namaHari + " dari " + s.getBeginTime() + " sampai " + s.getFinishTime());
         }
 
@@ -333,6 +331,11 @@ public class AdminMenu {
                     continue;
                 }
 
+                if (appointmentDateTime.isBefore(LocalDateTime.now())) {
+                    System.out.println("Waktu appointment tidak boleh di masa lalu. Coba lagi.");
+                    continue;
+                }
+
                 int dayOfWeek = appointmentDate.getDayOfWeek().getValue(); // 1=Senin, 7=Minggu
 
                 // 8. Validasi apakah waktu ada di dalam salah satu schedule
@@ -355,123 +358,17 @@ public class AdminMenu {
 
         } while (!validTime);
 
+        AppointmentQueueService.loadAppointmentData(idDoctor);
         // 9. Buat dan jadwalkan janji temu
         Appointment appointment = new Appointment(idAppointment, idPatient, idDoctor, appointmentDateTime);
+        System.out.println("");
         AppointmentQueueService.scheduleAppointment(appointment);
-
-        System.out.println("Appointment berhasil dijadwalkan.");
-        AppointmentQueueService.loadAppointmentData(idDoctor);
-    }
-
-    // =========================== function 9 ===========================
-    public static void processAppointments() {
-        System.out.println("\n======= Process Appointment =======");
-
-        // 1. Tampilkan daftar spesialisasi
-        System.out.println("Daftar Spesialisasi yang Tersedia:");
-        LinkedList<String> specialistList = DoctorRecordService.getSpecialistList();
-        for (int i = 0; i < specialistList.size(); i++) {
-            System.out.println((i + 1) + ". " + specialistList.get(i));
-        }
-
-        int selectedSpecialtyIndex;
-        do {
-            selectedSpecialtyIndex = Helper.integerInput(scanner, "Pilih nomor spesialisasi: ") - 1;
-        } while (selectedSpecialtyIndex < 0 || selectedSpecialtyIndex >= specialistList.size());
-
-        String chosenSpecialty = specialistList.get(selectedSpecialtyIndex);
-
-        // 2. Filter dokter yang login dan sesuai spesialisasi
-        LinkedList<Doctor> filteredDoctors = new LinkedList<>();
-        System.out.println("\nDokter Login dengan Spesialisasi: " + chosenSpecialty);
-        for (int i = 0; i < DoctorRecordService.getAllDoctors().size(); i++) {
-            Doctor d = DoctorRecordService.getAllDoctors().get(i);
-            if (d.getIsLogin() && d.getSpecialty().equalsIgnoreCase(chosenSpecialty)) {
-                filteredDoctors.addLast(d);
-                System.out.println("ID: " + d.getId() + " - " + d.getName());
-            }
-        }
-
-        if (filteredDoctors.isEmpty()) {
-            System.out.println("Tidak ada dokter login dalam spesialisasi ini.");
-            return;
-        }
-
-        // 3. Pilih dokter dari daftar login
-        int doctorId;
-        Doctor selectedDoctor = null;
-        boolean validDoctor = false;
-        do {
-            doctorId = Helper.integerInput(scanner, "Masukkan ID Dokter: ");
-            for (int i = 0; i < filteredDoctors.size(); i++) {
-                Doctor d = filteredDoctors.get(i);
-                if (d.getId() == doctorId) {
-                    selectedDoctor = d;
-                    validDoctor = true;
-                    break;
-                }
-            }
-            if (!validDoctor) {
-                System.out.println("ID dokter tidak valid atau dokter tidak sedang login.");
-            }
-        } while (!validDoctor);
-
-        // 4. Cek antrian appointment
-        PriorityQueue<Appointment> queue = selectedDoctor.getAppointmentQueue();
-        if (queue.isEmpty()) {
-            System.out.println("Tidak ada appointment dalam antrian.");
-            return;
-        }
-
-        Appointment next = queue.peek();
-        System.out.println("\nAppointment Berikutnya:");
-        next.displayAppointmentInfo();
-
-        System.out.println("\n1. Layani Appointment");
-        System.out.println("2. Kembali");
-        int option = Helper.integerInput(scanner, "Pilih opsi: ");
-
-        if (option == 1) {
-            // Proses appointment
-            Appointment servedAppointment = queue.dequeue();
-            System.out.println("Appointment ID " + servedAppointment.getAppointmentId() + " sedang dilayani.");
-            Patient patient = PatientSearchTreeService.getPatientTree().containsID(servedAppointment.getPatientId());
-
-            System.out.println("Tambahkan data untuk pasien:");
-            System.out.println("1. Symptom");
-            System.out.println("2. Diagnosis");
-            System.out.println("3. Medication");
-            System.out.println("4. Notes");
-            System.out.println("5. Selesai");
-
-            while (true) {
-                int choice = Helper.integerInput(scanner, "Pilih input yang ingin ditambahkan (1-5): ");
-                scanner.nextLine(); // flush newline
-
-                if (choice == 5) break;
-
-                System.out.print("Isi: ");
-                String value = scanner.nextLine();
-
-                switch (choice) {
-                    case 1 -> patient.getSymptom().addLast(value);
-                    case 2 -> patient.getDiagnosis().addLast(value);
-                    case 3 -> patient.getMedication().addLast(value);
-                    case 4 -> patient.setNotes(value);
-                    default -> System.out.println("Pilihan tidak valid.");
-                }
-            }
-
-            System.out.println("Data pasien berhasil diperbarui.");
-        } else {
-            System.out.println("Kembali ke menu sebelumnya.");
-        }
-        AppointmentQueueService.loadAppointmentData(doctorId);
     }
 
     // =========================== function 10 ===========================
-    static void displayAppointments() {
-        System.out.println("\n======= Display Upcoming Appointments =======");
+    private static void displayAppointments(Scanner scanner) {
+        Helper.clearScreen();
+        System.out.println("\n======= Display Upcoming Appointments =======\n");
 
         // 1. Tampilkan daftar spesialisasi
         System.out.println("Daftar Spesialisasi yang Tersedia:");
@@ -525,21 +422,24 @@ public class AdminMenu {
     }
 
     // =========================== function 11 ===========================
-    private static void searchPatientById() {
-        System.out.println("\n======= Search Patient by ID =======");
+    private static void searchPatientById(Scanner scanner) {
+        Helper.clearScreen();
+        System.out.println("\n======= Search Patient by ID =======\n");
         int idPasien = Helper.integerInput(scanner, "Enter Patient ID to search: ");
         PatientSearchTreeService.searchPatient(idPasien);
     }
 
     // =========================== function 12 ===========================
     private static void displayPatientsInOrder() {
-        System.out.println("\n======= Display All Patients (Sorted by ID) =======");
+        Helper.clearScreen();
+        System.out.println("\n======= Display All Patients (Sorted by ID) =======\n");
         PatientSearchTreeService.inOrderDisplay();
     }
 
     // =========================== function 13 ===========================
-    public static void doctorRegister() {
-        System.out.println("======= Register New Doctor =======\n");
+    public static void doctorRegister(Scanner scanner) {
+        Helper.clearScreen();
+        System.out.println("\n======= Register New Doctor =======\n");
         System.out.print("Enter Doctor's Name : "); // input name
         String newName = scanner.nextLine();
         System.out.print("Enter new password : "); // input address
@@ -561,7 +461,7 @@ public class AdminMenu {
             }
             // spesialis baru
             else if (choosenOption == (DoctorRecordService.getSpecialistList().size() + 1)) {
-                System.out.println("Input new specialist : ");
+                System.out.print("Input new specialist : ");
                 String newSpecialist = scanner.nextLine();
                 DoctorRecordService.getSpecialistList().addLast(newSpecialist);
                 DoctorRecordService.getSpecialistCount().addLast(1);
@@ -569,6 +469,11 @@ public class AdminMenu {
                 String formattedId = String.format("1%02d%02d", (DoctorRecordService.getSpecialistList().size()), 1);
                 newId = Integer.parseInt(formattedId);
                 isGetSpecialist = true;
+
+                // buat nyimpen
+                DoctorRecordService.updateSpecialist();
+                DoctorRecordService.makeSpecialistList();
+
             }
             else {
                 if (DoctorRecordService.getSpecialistCount().get(choosenOption - 1) > 99) {
@@ -578,7 +483,7 @@ public class AdminMenu {
                     DoctorRecordService.getSpecialistCount().set(choosenOption - 1, DoctorRecordService.getSpecialistCount().get(choosenOption - 1) + 1);
                     specialist = DoctorRecordService.getSpecialistList().get(choosenOption- 1);
                     int specialistIndex = choosenOption - 1;
-                    int doctorNumber = DoctorRecordService.getSpecialistCount().get(specialistIndex);
+                    int doctorNumber = DoctorRecordService.getSpecialistCount().get(specialistIndex) + 1;
                     String formattedId = String.format("1%02d%02d", specialistIndex + 1, doctorNumber);
                     newId = Integer.parseInt(formattedId);
                     isGetSpecialist = true;
@@ -590,9 +495,10 @@ public class AdminMenu {
         DoctorRecordService.registerDoctor(newDoctor);
     }
 
-    // =========================== funtion 14 ===========================
-    public static void makeDoctorSchedule() {
-        System.out.println("======= Make Doctor Schedule =======\n");
+    // =========================== function 14 ===========================
+    public static void makeDoctorSchedule(Scanner scanner) {
+        Helper.clearScreen();
+        System.out.println("\n======= Make Doctor Schedule =======\n");
         int idDoctor = Helper.integerInput(scanner, "Masukkan ID Doctor: ");
         Doctor doctor = DoctorRecordService.findDoctorById(idDoctor);
         if (doctor == null) {
@@ -611,19 +517,4 @@ public class AdminMenu {
         // String newSchedule = idDoctor + "|" + day + "|" + beginTime + "|" + finishTime;
         ScheduleRecord.saveScheduleToTXT();
     }
-
-
-    public static String getDayName(int day) {
-        return switch (day) {
-            case 1 -> "Senin";
-            case 2 -> "Selasa";
-            case 3 -> "Rabu";
-            case 4 -> "Kamis";
-            case 5 -> "Jumat";
-            case 6 -> "Sabtu";
-            case 7 -> "Minggu";
-            default -> "Hari Tidak Dikenal";
-        };
-    }
-
 }

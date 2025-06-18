@@ -91,6 +91,13 @@ public class PriorityQueue<T extends Comparable<T>> {
         heap[j] = temp;
     }
 
+    public void clear() {
+        for (int i = 0; i < size; i++) {
+            heap[i] = null;
+        }
+        size = 0;
+    }
+
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();

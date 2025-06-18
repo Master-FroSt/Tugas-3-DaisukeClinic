@@ -1,11 +1,14 @@
 Doctor ID | Name | Password | Login Time | Logout Time
-10101 | Dokter jadian | kurang | 2025-06-11T12:28:23.443673500 | null
-10201 | dukun palsu | kebalik | 2025-06-16T13:34:09.298650800 | null
-10301 | Trisa | pass | null | null
-10401 | Trisa2 | pass | null | null
-10501 | Sanny | pass | null | null
-10601 | Sanny2 | pass | null | null
-10701 | Naomi | pass | null | null
-10801 | Naomi2 | pass | null | null
-10901 | Doctor23 | pass | null | null
-11001 | Doctor90 | pass | null | null
+10101 | Tirta | Tir123 | 2025-06-18T12:11:58.924011200 | null
+10201 | Tatir | Tat123 | 2025-06-16T13:34:09.298650800 | null
+10301 | Trisa | pass123 | null | null
+10401 | Trisa2 | pass123 | null | null
+10501 | Sanny | pass123 | 2025-06-18T12:11:58.931015100 | null
+10601 | Sanny2 | pass123 | null | null
+10701 | Naomi | pass123 | null | null
+10801 | Naomi2 | pass123 | null | null
+10901 | Tung | pass123 | 2025-06-17T11:34:48.466803200 | null
+11001 | Peng | pass123 | null | null
+11101 | Bener | pass123 | 2025-06-18T12:20:54.959868 | null
+10102 | Mous | Mous123 | null | null
+11201 | Mus | Mus123 | 2025-06-18T12:31:55.578013900 | null

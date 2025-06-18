@@ -1,0 +1,5 @@
+Admin ID | Password | Name
+30001 | admin123 | admin Siang
+30002 | admin123 | admin Malam
+30003 | admin123 | admin Subuh
+30004 | Admin Pagi | Admin123

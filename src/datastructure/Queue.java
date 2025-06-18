@@ -32,6 +32,10 @@ public class Queue<T> {
         return size == 0;
     }
 
+    public boolean isFull() {
+        return size == capacity;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

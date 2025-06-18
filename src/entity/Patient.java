@@ -82,15 +82,15 @@ public class Patient {
 
     // ==================================== Display patient ====================================
     public void displayPatientInfo() {
-        System.out.printf("ID\t\t: %d\n", ID);
-        System.out.println("Name\t\t: " + name);
-        System.out.println("Age\t\t: " + age);
-        System.out.println("Address\t\t: " + address);
+        System.out.printf("ID\t\t\t\t: %d\n", ID);
+        System.out.println("Name\t\t\t: " + name);
+        System.out.println("Age\t\t\t\t: " + age);
+        System.out.println("Address\t\t\t: " + address);
         System.out.println("Phone Number\t: " + phoneNumber);
-        System.out.println("Symptom\t: " + symptom.toString());
-        System.out.println("Diagnosis\t: " + diagnosis.toString());
-        System.out.println("Medication\t: " + medication.toString());
-        System.out.println("Notes\t: " + notes);
+        System.out.println("Symptom\t\t\t: " + symptom.toString());
+        System.out.println("Diagnosis\t\t: " + diagnosis.toString());
+        System.out.println("Medication\t\t: " + medication.toString());
+        System.out.println("Notes\t\t\t: " + notes);
     }
 
     @Override

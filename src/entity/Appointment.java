@@ -47,6 +47,6 @@ public class Appointment implements Comparable<Appointment> {
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         String formattedTime = time.format(formatter);
-        return String.format("ID: %03d | Dr. %-20s | Specialty: %s%s", appointmentId, patientId, doctorId, formattedTime);
+        return String.format("ID: %03d | Patient ID : %03d | Dr ID: %03d | Time: %s", appointmentId, patientId, doctorId, formattedTime);
     }
 }

@@ -24,7 +24,7 @@ public class DoctorRecordService {
     }
 
     // Buat nyimpen ada specialist apa aja
-    private static void makeSpecialistList() {
+    public static void makeSpecialistList() { // txt
         specialistList = new LinkedList<>();
         // open txt
         try (BufferedReader br = new BufferedReader(new FileReader("src/data/specialist.txt"))) {

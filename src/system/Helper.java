@@ -23,7 +23,7 @@ public class Helper {
     public static void pressEnter(Scanner scanner) {
         System.out.print("\n\nPress Enter to Continue....");
         scanner.nextLine(); // Wait for Enter key
-//         clearScreen();
+        clearScreen();
     }
 
     public static LocalTime timeInput(Scanner scanner, String prompt) {
@@ -37,5 +37,16 @@ public class Helper {
                 System.out.println("Format waktu tidak valid. Gunakan format HH:mm (contoh: 08:30).");
             }
         }
+    }
+
+    public static void exitProgram() {
+        System.out.println("\nThank you for using our system. Goodbye!");
+        System.out.println("Exiting program...");
+        System.exit(0); // 0 means normal termination
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }

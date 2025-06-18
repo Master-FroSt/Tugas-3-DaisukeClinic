@@ -50,7 +50,7 @@ public class Doctor {
         String formattedLoginTime = (loginTime == null) ? "Not logged in" : loginTime.format(formatter);
         String formattedLogoutTime = (logoutTime == null) ? "Not logged out" : logoutTime.format(formatter);
 
-        System.out.println("ID\t\t: " + ID);
+        System.out.println("ID\t\t\t: " + ID);
         System.out.println("Name\t\t: " + name);
         System.out.println("Specialty\t: " + specialty);
         if (loginTime != null) {
