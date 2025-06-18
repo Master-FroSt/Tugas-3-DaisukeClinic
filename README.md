@@ -217,6 +217,6 @@ Pada method Constructor, semua argumen digunakan untuk inisialisasi. Semua prope
 
 ## Pembagian tugas:
 1. Struktur data: {double dan singly Linked List, Stack, AVL Balance Tree}, sistem masukan dan keluaran file (txt), implementasi scanner dan helper untuk mendukung main, implementasi fungsi untuk menu 1-15, format id dokter sesuai spesialis, penyelesaian program.
-2. Struktur data: {Queue dan priority queue}, format menu dan validasi, menu schedule  
+2. Struktur data: {Queue dan priority queue}, format menu dan validasi, menu schedule, pembuatan dan penyuntingan video demo
 3. Struktur data: {BST}, Login page, pemisahan tiga menu {admin, dokter, dan pasien}, penulisan Readme.md
 
